@@ -1,4 +1,4 @@
-def init():
+def init(drivers, drivernames, configmgr, drivermgr):
     pass
 
 def getinput(prompt):

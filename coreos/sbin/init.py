@@ -29,15 +29,24 @@ def start():
             x = line.split("=")
             keys.append(x[0])
             vals.append(x[1])
-        y = vals[keys.index(modx[0])]
+        y = vals[keys.index(modx[0])].strip("\n")
         yx = y.split("/")
         drv = drivermgr.load(yx[1],yx[0])
         drivernames.append(modx[0])
         drivers.append(drv)
+        drv.init(drivers, drivernames, configmgr, drivermgr)
         if verbosedrivers:
-            display.printline("* Loaded module " + modx[0] + " from " + y)
+            display.printline("*   Loaded module " + modx[0] + " from " + y)
     # find drivers like this: drivers[drivernames.index("[name]")]
-    display.printline("* Drivers Loaded Successfully")
+    display.printline("*   Drivers Loaded Successfully")
+
+    # Add key paths to PATH variable
+    sys.path.append("usr/bin")
+    sys.path.append("usr/local/bin")  
+
+
+
+    # Load init programs
     initprogs = []
     initprognames = []
     for progs in init:
@@ -52,7 +61,7 @@ def start():
         yx = y.split("/")
         drv = drivermgr.defload(yx[1],yx[0])
         if verbosedrivers:
-            display.printline("* Executing startup task " + progx[0] + " from " + y)
+            display.printline("*   Executing startup task " + progx[0] + " from " + y)
         drv.init(drivers, drivernames, configmgr, drivermgr)
         
 
