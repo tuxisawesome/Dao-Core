@@ -39,7 +39,7 @@ def start():
             display.printline("*   Loaded module " + modx[0] + " from " + y)
     # find drivers like this: drivers[drivernames.index("[name]")]
     display.printline("*   Drivers Loaded Successfully")
-
+    
     # Add key paths to PATH variable
     sys.path.append("usr/bin")
     sys.path.append("usr/local/bin")  
@@ -69,8 +69,8 @@ def start():
     else: recoveryenabled = True
 
     if not recoveryenabled:
-        sys = drivers[drivernames.index("sys")]
-        sys.reset()
+        sysctl = drivers[drivernames.index("sys")]
+        sysctl.reset()
     else:
         display.printline("Recovery Mode")
         display.printline("Please restore this device.")
