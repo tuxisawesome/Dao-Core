@@ -63,8 +63,17 @@ def start():
         if verbosedrivers:
             display.printline("*   Executing startup task " + progx[0] + " from " + y)
         drv.init(drivers, drivernames, configmgr, drivermgr)
-        
+    
+    recoveryenabled = configmgr.getvalue(config, "recoveryenabled")
+    if recoveryenabled == 0: recoveryenabled = False 
+    else: recoveryenabled = True
 
+    if not recoveryenabled:
+        sys = drivers[drivernames.index("sys")]
+        sys.reset()
+    else:
+        display.printline("Recovery Mode")
+        display.printline("Please restore this device.")
 
     '''
     You can also use the default __import__ function as

@@ -10,23 +10,35 @@ def init(drivers, drivernames, configmgr, drivermgr):
             x = drivers[drivernames.index("input")].getinput("$ ")
             if x == "": continue
 
-            if x == "exit": break
+            if x == "exit":
+                continue
+
+            if x == "poweroff":
+                sys = drivers[drivernames.index("sys")]
+                display.printline("*   This system is going down for shutdown NOW!")
+                sys.powerdown()
+            
+            if x == "reset":
+                sys = drivers[drivernames.index("sys")]
+                display.printline("*   This system is restarting NOW!")
+                sys.reset()
             
             if x == "help": 
                 display.printline("WalterOS Shell")
                 continue
             try:
                 y = drivermgr.defload(x, "bin/")
-            except ModuleNotFoundError:
+            except:
                 display.printline("File not found!")
                 continue
             try:
-                y.init(drivers, drivernames, configmgr, drivermgr)
-            except AttributeError:
+                x = y.init(drivers, drivernames, configmgr, drivermgr)
+                if x == "quit":
+                    break
+                else:
+                    continue
+            except:
                 display.printline("File may be corrupted!\nPlease check the arguments the file is taking.")
-                continue
-            except TypeError:
-                display.printline("Attempted to load a driver file, skipping...")
                 continue
             
     else:

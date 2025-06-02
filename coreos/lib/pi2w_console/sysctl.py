@@ -13,9 +13,9 @@ def dir(path):
         return 255
     
 def powerdown():
-    import sys
-    sys.exit(0)
+    import machine
+    machine.deepsleep()
 
 def reset():
-    import sys
-    sys.exit(0)
+    import machine
+    machine.reset()
