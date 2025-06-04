@@ -1,14 +1,36 @@
 import sys
 import drivermgr, configmgr
 
-def start():
+def recoveryf(display, mods, recoverycfg):
+    recoveryenabled = configmgr.getvalue(recoverycfg, "recoveryenabled")
+    if recoveryenabled == 0: recoveryenabled = False 
+    else: recoveryenabled = True
+
+    if not recoveryenabled:
+        x = configmgr.getvalue(mods, "sys")
+        y = x.split("/")
+        sysctl = drivermgr.load(y[1],y[0])
+        sysctl.reset()
+    else:
+        recovery = configmgr.readconfig("recovery.cfg")
+        bootr = configmgr.getvalue(recovery, "boot_to_recovery")
+        if not bootr == "0":
+            recovery = configmgr.setvalue(recovery, "boot_to_recovery", "0")
+            configmgr.writeconfig("recovery.cfg", recovery)
+        display.printline("Recovery Mode")
+        display.printline("Please restore this device and then reset.")
+
+
+def stage1():
     mods = configmgr.readconfig("modules.cfg")
     init = configmgr.readconfig("init.cfg")
     config = configmgr.readconfig("config.cfg")
+    recovery = configmgr.readconfig("recovery.cfg")
+
     # Establish constants
     ver = configmgr.getvalue(config, "version")
     verbosedrivers = configmgr.getvalue(config, "verbosedrivers")
-    if verbosedrivers == 0: verbosedrivers = False 
+    if verbosedrivers == "0": verbosedrivers = False 
     else: verbosedrivers = True
 
 
@@ -16,8 +38,21 @@ def start():
     x = configmgr.getvalue(mods, "display")
     y = x.split("/")
     display = drivermgr.load(y[1],y[0])
+    
 
     display.printline("Dao " + ver + " is starting up!")
+    bootr = configmgr.getvalue(recovery, "boot_to_recovery")
+    if bootr == "0": bootr = False 
+    else: bootr = True
+    if bootr:
+        recoveryf(display, mods, recovery)
+    else:
+        stage2(display, mods, init, config, recovery, ver, verbosedrivers)
+    '''
+    You can also use the default __import__ function as
+    module = __import__(custom)
+    '''
+def stage2(display, mods, init, config, recovery, ver, verbosedrivers):
     # load other modules
     drivers = []
     drivernames = []
@@ -64,18 +99,5 @@ def start():
             display.printline("*   Executing startup task " + progx[0] + " from " + y)
         drv.init(drivers, drivernames, configmgr, drivermgr)
     
-    recoveryenabled = configmgr.getvalue(config, "recoveryenabled")
-    if recoveryenabled == 0: recoveryenabled = False 
-    else: recoveryenabled = True
+    
 
-    if not recoveryenabled:
-        sysctl = drivers[drivernames.index("sys")]
-        sysctl.reset()
-    else:
-        display.printline("Recovery Mode")
-        display.printline("Please restore this device.")
-
-    '''
-    You can also use the default __import__ function as
-    module = __import__(custom)
-    '''
