@@ -21,6 +21,7 @@ def init(drivers, drivernames, configmgr, drivermgr):
         if not recen == "1":
             recovery = configmgr.setvalue(recovery, "recoveryenabled", "1")
             configmgr.writeconfig("recovery.cfg", recovery)
+        display.printline("Writing changes success!")
         sysctl.reset()
     try:
         file = configmgr.readconfig(files[int(x)])

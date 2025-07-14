@@ -27,9 +27,23 @@ def init(drivers, drivernames, configmgr, drivermgr):
                 display.printline("WalterOS Shell")
                 continue
             try:
-                y = drivermgr.defload(x, "bin/")
+                args = x.split(" ")
+                if len(args) > 1:
+                    newenv = configmgr.setvalue(configmgr.readconfig("env.cfg"), "argv", args[1])
+                    configmgr.writeconfig("env.cfg",newenv)
+                else:
+                    newenv = configmgr.setvalue(configmgr.readconfig("env.cfg"), "argv", "null")
+                    configmgr.writeconfig("env.cfg",newenv)
+                try:
+                    y = drivermgr.defload(args[0], "bin/")
+                except:
+                    try:
+                        y = drivermgr.defload(args[0], "usr/bin/")
+                    except:
+                        display.printline("File not found!")
+                        continue
             except:
-                display.printline("File not found!")
+                display.printline("ERROR!")
                 continue
             try:
                 x = y.init(drivers, drivernames, configmgr, drivermgr)

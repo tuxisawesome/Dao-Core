@@ -1,5 +1,5 @@
 # Drivers
-### Display drivers
+All programs get `drivers, drivernames, configmgr, drivermgr` passed to their init function. We omit it here.
 #### Print - Default text display
 Format:
 ```
@@ -7,7 +7,7 @@ def init():
     (initialization code)
 
 def print(text):
-    (print code)
+    (prints text on screen)
 
 def clear():
     (clears screen)
@@ -20,7 +20,7 @@ def init():
     (initialization code)
 
 def getinput(prompt):
-    (Gets input with prompt [prompt])
+    (Gets input with prompt [prompt]) and returns string
 ```
 #### System Control - System functions (sysctl)
 Format:
@@ -33,8 +33,8 @@ def dir():
     (returns list if exists, 1 if does not exist, 255 for other error)
 
 def powerdown():
-    (shutdown function)
+    (shutdown function. Should not return)
 
 def reset():
-    (reset function)
+    (reset function. should not return)
 ```
