@@ -27,6 +27,15 @@ def getvalue(config, key):
         vals.append(x[1])
     return vals[keys.index(key)].strip("\n")
 
+def getkeys(config):
+    keys = []
+    vals = []
+    for line in config:
+        x = line.split("=")
+        keys.append(x[0].strip("\n"))
+        vals.append(x[1])
+    return keys
+
 def getkey(config, value):
     keys = []
     vals = []

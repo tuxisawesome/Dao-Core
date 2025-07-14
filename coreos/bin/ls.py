@@ -4,7 +4,7 @@ def init(drivers, drivernames, configmgr, drivermgr):
     argv = configmgr.getvalue(configmgr.readconfig("env.cfg"), "argv")
     if argv == "null":
     
-        x = drivers[drivernames.index("input")].getinput("Directory to list? ")
+        x = "."
     else:
         x = argv
     y = sys.dir(x)
