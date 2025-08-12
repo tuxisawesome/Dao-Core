@@ -151,10 +151,9 @@ def init(drivers,drivernames,configmgr,drivermgr):
     configmgr.writeconfig("verifiedboot.cfg",conf)
     display.printline("Done!")
 
-if __name__ == "__main__":
-    import sys
-    sys.path.insert(1, 'sbin/')
-    import configmgr
+def sign():
+    
+    import kernel as configmgr
 
     conf = configmgr.readconfig("verifiedboot.cfg")
     sid = configmgr.getkeys(conf)
@@ -171,3 +170,5 @@ if __name__ == "__main__":
     configmgr.writeconfig("verifiedboot.cfg",conf)
     print("Done!")
 
+if __name__ == "__main__":
+    sign()

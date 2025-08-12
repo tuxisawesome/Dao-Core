@@ -16,13 +16,16 @@ def init(drivers, drivernames, configmgr, drivermgr):
             if x == "poweroff":
                 sys = drivers[drivernames.index("sys")]
                 display.printline("*   This system is going down for shutdown NOW!")
-                sys.powerdown()
+                return
             
-            if x == "reset":
-                sys = drivers[drivernames.index("sys")]
-                display.printline("*   This system is restarting NOW!")
-                sys.reset()
             
+            if x == "env-reload":
+                import sys
+                for mod in sys.modules:
+                    #display.printline("*   '" + mod + "' is reloaded.")
+                    del mod
+                continue
+                        
             if x == "help": 
                 display.printline("WalterOS Shell")
                 continue

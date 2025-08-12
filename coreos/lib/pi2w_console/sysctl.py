@@ -13,8 +13,9 @@ def dir(path):
         return 255
     
 def powerdown():
-    import machine
-    machine.deepsleep()
+    print("It is now safe to turn off this computer.")
+    while True:
+        continue
 
 def reset():
     import machine
