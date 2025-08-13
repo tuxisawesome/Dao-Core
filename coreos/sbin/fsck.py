@@ -1,4 +1,8 @@
-def init(drivers,drivernames,configmgr,drivermgr): #  FSCK - File System ChecK: A basic system integrity checker
+def init(drivers,drivernames,configmgr,drivermgr,kernel): #  FSCK - File System ChecK: A basic system integrity checker
+    kargs = kernel.args
+    for arg in kargs:
+        if arg.startswith("nofsck="):
+            return
     v = 1.0 # Todo: check file hashes
     sys = drivers[drivernames.index("sys")]
     display = drivers[drivernames.index("display")]
@@ -10,7 +14,7 @@ def init(drivers,drivernames,configmgr,drivermgr): #  FSCK - File System ChecK: 
         x = isthere(s)
         if x == False:
             display.printline("!!! Core system file " + s + " missing! Halting...")
-            sys.powerdown()
+            kernel.panic("Core system file missing")
         else:
             with open(s, 'r') as x:
                 p = x.readlines()
@@ -20,7 +24,7 @@ def init(drivers,drivernames,configmgr,drivermgr): #  FSCK - File System ChecK: 
                 filehash = helper.sha256(z)
                 if filehash != configmgr.getvalue(hashdb, s):
                     display.printline("!!! File hash check for " + s + " failed!")
-                    sys.powerdown()
+                    kernel.panic("File hash check failed for " + s)
                 x.close()
                 
 

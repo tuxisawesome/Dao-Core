@@ -1,6 +1,6 @@
 import sys
 
-def init(display, init, verbosedrivers,configmgr,drivermgr,drivers,drivernames,nofsck=False):
+def init(display, init, verbosedrivers,configmgr,drivermgr,drivers,drivernames,kernel):
     # Add key paths to PATH variable
     sys.path.append("usr/bin")
     sys.path.append("usr/local/bin")  
@@ -20,13 +20,10 @@ def init(display, init, verbosedrivers,configmgr,drivermgr,drivers,drivernames,n
             vals.append(x[1])
         y = vals[keys.index(progx[0])]
         yx = y.split("/")
-        if progx[0] == "fsck":
-            if nofsck:
-                continue # Adds option for no file system checking in kernel requirements
         drv = drivermgr.defload(yx[1],yx[0])
         if verbosedrivers:
             display.printline("*   Executing startup task " + progx[0] + " from " + y)
-        drv.init(drivers, drivernames, configmgr, drivermgr)
+        drv.init(drivers, drivernames, configmgr, drivermgr,kernel)
 
     
     

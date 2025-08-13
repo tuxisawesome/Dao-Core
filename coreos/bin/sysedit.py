@@ -1,11 +1,21 @@
-def init(drivers, drivernames, configmgr, drivermgr):
+def init(drivers, drivernames, configmgr, drivermgr,kernel):
     display = drivers[drivernames.index("display")]
     input = drivers[drivernames.index("input")]
     sysctl = drivers[drivernames.index("sys")]
+
+
+    a = '['
+    for arg in kernel.args:
+        a += "'" + arg + "' "
+    a += "]"
+    a = a.strip()
+
+
     display.printline("System Settings")
+    display.printline("Kernel arguments: " + a)
     display.printline("Please enter the setting file you want to edit, or type 'r' to restart into recovery.")
     display.printline("")
-    files = sysctl.dir('etc/')
+    files = sysctl.dir(kernel.configpath)
     count = 0
     for file in files:
         display.printline(str(count) + " - " + file.strip("\n"))

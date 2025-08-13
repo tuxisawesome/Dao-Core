@@ -1,4 +1,4 @@
-def init(drivers,drivernames,configmgr,drivermgr):
+def init(drivers,drivernames,configmgr,drivermgr,kernel):
     pass
 
 def sha256(data: str) -> str:

@@ -133,7 +133,7 @@ def sha256(data: str) -> str:
     final_hash = ''.join(f'{val:08x}' for val in H)
     return final_hash
 
-def init(drivers,drivernames,configmgr,drivermgr):
+def init(drivers,drivernames,configmgr,drivermgr,kernel):
     display = drivers[drivernames.index("display")]
     display.printline("Bootsign")
     conf = configmgr.readconfig("verifiedboot.cfg")

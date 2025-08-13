@@ -1,4 +1,4 @@
-def init(drivers, drivernames, configmgr, drivermgr):
+def init(drivers, drivernames, configmgr, drivermgr,kernel):
     import os
     try:
         columns, rows = os.get_terminal_size()

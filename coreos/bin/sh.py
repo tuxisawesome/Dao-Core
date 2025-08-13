@@ -1,4 +1,4 @@
-def init(drivers, drivernames, configmgr, drivermgr):
+def init(drivers, drivernames, configmgr, drivermgr,kernel):
     config = configmgr.readconfig("config.cfg")
     interactive = configmgr.getvalue(config, "interactive")
     display = drivers[drivernames.index("display")]
@@ -49,7 +49,7 @@ def init(drivers, drivernames, configmgr, drivermgr):
                 display.printline("ERROR!")
                 continue
             try:
-                x = y.init(drivers, drivernames, configmgr, drivermgr)
+                x = y.init(drivers, drivernames, configmgr, drivermgr,kernel)
                 if x == "quit":
                     break
                 else:

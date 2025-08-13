@@ -121,7 +121,7 @@ def evaluate_postfix(tokens):
     return stack[0]
 
 # --- Main Program Loop ---
-def init(drivers, drivernames, configmgr, drivermgr):
+def init(drivers, drivernames, configmgr, drivermgr,kernel):
     """
     Main function to run the bc calculator.
     """

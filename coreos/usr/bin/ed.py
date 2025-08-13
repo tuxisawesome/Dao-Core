@@ -9,7 +9,7 @@ Unix ed, with all logic contained within a single function.
 
 import re
 
-def init(drivers,drivernames,configmgr,drivermgr):
+def init(drivers,drivernames,configmgr,drivermgr,kernel):
     sys = drivers[drivernames.index("sys")]
     display = drivers[drivernames.index("display")]
     inp = drivers[drivernames.index("input")]

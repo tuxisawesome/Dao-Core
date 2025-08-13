@@ -1,4 +1,4 @@
-def init(drivers, drivernames, configmgr, drivermgr):
+def init(drivers, drivernames, configmgr, drivermgr,kernel):
     sys = drivers[drivernames.index("sys")]
     display = drivers[drivernames.index("display")]
     argv = configmgr.getvalue(configmgr.readconfig("env.cfg"), "argv")
