@@ -23,7 +23,7 @@ def init(drivers,drivernames,configmgr,drivermgr,kernel):
 
             # Check for commands to exit the REPL.
             if source.strip().lower() in ["exit()", "quit()"]:
-                print("Exiting REPL.")
+                display.printline("Exiting REPL.")
                 break
 
             # 2. EVALUATE: Try to evaluate the input as an expression first.

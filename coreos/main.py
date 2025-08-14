@@ -19,17 +19,16 @@ def startup():
 
         args = x.split(" ")
         boot = args.pop(0)
-        try:
-            bootloader = bios.defload(boot,".")    
-        except:
-            print("Error booting.")
-            startup()
+        
+        bootloader = bios.defload(boot,".")    
+
         bootloader.boot(args)
 
 
 class bios:
     def defload(name, path):
         import sys
+        sys.path = []
         sys.path.append(path)    
         return __import__(name.strip("\n"))
     

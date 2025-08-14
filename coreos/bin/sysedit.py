@@ -14,6 +14,7 @@ def init(drivers, drivernames, configmgr, drivermgr,kernel):
     display.printline("System Settings")
     display.printline("Kernel arguments: " + a)
     display.printline("Please enter the setting file you want to edit, or type 'r' to restart into recovery.")
+    display.printline("Type 'q' to quit.")
     display.printline("")
     files = sysctl.dir(kernel.configpath)
     count = 0
@@ -22,22 +23,25 @@ def init(drivers, drivernames, configmgr, drivermgr,kernel):
         count = count + 1
     x = input.getinput("? ")
     if x == 'r' or x == "R":
-        recovery = configmgr.readconfig("recovery.cfg")
-        bootr = configmgr.getvalue(recovery, "boot_to_recovery")
-        recen = configmgr.getvalue(recovery, "recoveryenabled")
+        config = configmgr.readconfig("config.cfg")
+        bootr = configmgr.getvalue(config, "boot_to_recovery")
+        recen = configmgr.getvalue(config, "recoveryenabled")
         if not bootr == "1":
-            recovery = configmgr.setvalue(recovery, "boot_to_recovery", "1")
-            configmgr.writeconfig("recovery.cfg", recovery)
+            config = configmgr.setvalue(config, "boot_to_recovery", "1")
+            configmgr.writeconfig("config.cfg", config)
         if not recen == "1":
-            recovery = configmgr.setvalue(recovery, "recoveryenabled", "1")
-            configmgr.writeconfig("recovery.cfg", recovery)
+            config = configmgr.setvalue(config, "recoveryenabled", "1")
+            configmgr.writeconfig("recovery.cfg", config)
         display.printline("Writing changes success!")
-        sysctl.reset()
+        return
+    if x == "q" or x == "Q":
+        return
     try:
         file = configmgr.readconfig(files[int(x)])
         stop = False
         while not stop:
             display.printline("Please select the entry you want to edit, or type 'w' to write or 'n' for new entry.")
+            display.printline("Type 'q' to quit.")
             count = 0
             for entry in file:
                 display.printline(str(count) + " - " + entry.strip("\n"))
@@ -45,6 +49,8 @@ def init(drivers, drivernames, configmgr, drivermgr,kernel):
             y = input.getinput("? ")
             if y == "w" or y == "W":
                 break
+            if y == "q" or y == "Q":
+                return
             elif y == "n" or y == "N":
                 key = input.getinput("Key of entry? ")
                 value = input.getinput("Value of entry? ")

@@ -1,0 +1,3 @@
+#!/bin/bash
+cd coreos
+python3 main.py

@@ -10,8 +10,8 @@ def init(drivers,drivernames,configmgr,drivermgr,kernel):
 
 
 
-def recoveryf(display, mods, recoverycfg):
-    recoveryenabled = configmgr.getvalue(recoverycfg, "recoveryenabled")
+def recoveryf(display, mods, config):
+    recoveryenabled = configmgr.getvalue(config, "recoveryenabled")
     if recoveryenabled == 0: recoveryenabled = False 
     else: recoveryenabled = True
 
@@ -21,11 +21,11 @@ def recoveryf(display, mods, recoverycfg):
         sysctl = drivermgr.load(y[1],y[0])
         sysctl.reset()
     else:
-        recovery = configmgr.readconfig("recovery.cfg")
-        bootr = configmgr.getvalue(recovery, "boot_to_recovery")
+        conf = config
+        bootr = configmgr.getvalue(conf, "boot_to_recovery")
         if not bootr == "0":
-            recovery = configmgr.setvalue(recovery, "boot_to_recovery", "0")
-            configmgr.writeconfig("recovery.cfg", recovery)
+            conf = configmgr.setvalue(conf, "boot_to_recovery", "0")
+            configmgr.writeconfig("config.cfg", conf)
         display.printline("Recovery Mode")
         display.printline("Please restore this device and then reset.")
 
@@ -45,7 +45,6 @@ def main(args):
     mods = configmgr.readconfig("modules.cfg",kernel.configpath)
     init = configmgr.readconfig("init.cfg",kernel.configpath)
     config = configmgr.readconfig("config.cfg",kernel.configpath)
-    recovery = configmgr.readconfig("recovery.cfg",kernel.configpath)
 
     # Establish constants
     ver = configmgr.getvalue(config, "version")
@@ -61,11 +60,11 @@ def main(args):
     
 
     display.printline("Dao " + ver + " is starting up!")
-    bootr = configmgr.getvalue(recovery, "boot_to_recovery")
+    bootr = configmgr.getvalue(config, "boot_to_recovery")
     if bootr == "0": bootr = False 
     else: bootr = True
     if bootr or isrecovery:
-        recoveryf(display, mods, recovery)
+        recoveryf(display, mods, config)
     else:
         drivers,drivernames = load_modules(display,mods,verbosedrivers)
         import init as start
@@ -115,6 +114,20 @@ class kernel:
                 continue
         except:
             kernel.panic(message)
+    def reload_env():
+        good_modules = ["sys"]
+        s = drivermgr.basicload("sys")
+        x = s.modules
+
+        try:
+            for mod in x:
+                #display.printline("*   '" + mod + "' is reloaded.")
+                if mod in good_modules: continue
+                del s.modules[mod]
+                del mod
+                            
+        except:
+            kernel.reload_env()
 
 
 
@@ -214,6 +227,9 @@ class drivermgr:
 
     def defload(name, path):
         sys.path.append(path)    
+        return __import__(name.strip("\n"))
+    
+    def basicload(name):
         return __import__(name.strip("\n"))
 
     def unload(name):

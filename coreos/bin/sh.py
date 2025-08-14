@@ -19,11 +19,8 @@ def init(drivers, drivernames, configmgr, drivermgr,kernel):
                 return
             
             
-            if x == "env-reload":
-                import sys
-                for mod in sys.modules:
-                    #display.printline("*   '" + mod + "' is reloaded.")
-                    del mod
+            if x == "env-reload":    
+                kernel.reload_env()
                 continue
                         
             if x == "help": 
