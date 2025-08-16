@@ -1,4 +1,12 @@
 def init(drivers, drivernames, configmgr, drivermgr,kernel):
+
+
+    debug = True
+
+
+
+
+    
     config = configmgr.readconfig("config.cfg")
     interactive = configmgr.getvalue(config, "interactive")
     display = drivers[drivernames.index("display")]
@@ -24,36 +32,50 @@ def init(drivers, drivernames, configmgr, drivermgr,kernel):
                 continue
                         
             if x == "help": 
-                display.printline("WalterOS Shell")
+                display.printline("WalterOS Shell\nAvailable commands are:  env-reload poweroff")
                 continue
             try:
                 args = x.split(" ")
                 if len(args) > 1:
-                    newenv = configmgr.setvalue(configmgr.readconfig("env.cfg"), "argv", args[1])
+                    newargs = args
+                    load = newargs.pop(0)
+                    new=""
+                    for arg in newargs:
+                        new = new + arg + " "
+                    new = new.strip()
+                    newenv = configmgr.setvalue(configmgr.readconfig("env.cfg"), "argv", new)
                     configmgr.writeconfig("env.cfg",newenv)
                 else:
                     newenv = configmgr.setvalue(configmgr.readconfig("env.cfg"), "argv", "null")
                     configmgr.writeconfig("env.cfg",newenv)
+                    load = x.split()[0]
                 try:
-                    y = drivermgr.defload(args[0], "bin/")
+                    y = drivermgr.defload(load, "bin/")
                 except:
                     try:
-                        y = drivermgr.defload(args[0], "usr/bin/")
-                    except:
-                        display.printline("File not found!")
+                        y = drivermgr.defload(load, "usr/bin/")
+                    except Exception as e:
+                        display.printline("File not found! " + str(e))
                         continue
             except:
                 display.printline("ERROR!")
                 continue
-            try:
+            if debug:
                 x = y.init(drivers, drivernames, configmgr, drivermgr,kernel)
                 if x == "quit":
                     break
                 else:
                     continue
-            except:
-                display.printline("File may be corrupted!\nPlease check the arguments the file is taking.")
-                continue
+            else:
+                try:
+                    x = y.init(drivers, drivernames, configmgr, drivermgr,kernel)
+                    if x == "quit":
+                        break
+                    else:
+                        continue
+                except:
+                    display.printline("File may be corrupted!\nPlease check the arguments the file is taking.")
+                    continue
             
     else:
         display.printline("!   Not an interactive shell, skipping...")

@@ -32,6 +32,7 @@ def recoveryf(display, mods, config):
 
 def main(args):
     isrecovery=False
+    vdrivers = False
     if len(args) >= 1:
         for arg in args:
             arg = arg.lower().split("=")
@@ -39,6 +40,10 @@ def main(args):
                 isrecovery = True;continue
             if arg[0] == "path":
                 kernel.configpath = arg[1];continue
+            if arg[0] == "verbosedrivers" and arg[1] == "true":
+                vdrivers = True;continue
+            if arg[0] == "verbosedrivers" and arg[1] == "false":
+                vdrivers = False;continue
     
     kernel.args = args
     print(kernel.args)
@@ -49,9 +54,10 @@ def main(args):
     # Establish constants
     ver = configmgr.getvalue(config, "version")
     verbosedrivers = configmgr.getvalue(config, "verbosedrivers")
-    if verbosedrivers == "0": verbosedrivers = False 
+    if vdrivers == False:
+        if verbosedrivers == "0": verbosedrivers = False 
+        else: verbosedrivers = True
     else: verbosedrivers = True
-    
 
     # First load display module
     x = configmgr.getvalue(mods, "display")
@@ -85,11 +91,18 @@ def load_modules(display,mods,verbosedrivers):
         vals = []
         for line in mods:
             x = line.split("=")
-            keys.append(x[0])
-            vals.append(x[1])
-        y = vals[keys.index(modx[0])].strip("\n")
-        yx = y.split("/")
-        drv = drivermgr.load(yx[1],yx[0])
+            keys.append(x[0]) # Appends the name
+            vals.append(x[1]) # Appends the path
+        y = vals[keys.index(modx[0])].strip("\n") # The path x[1]
+        yx = y.split("/") # Splits the path by the /shes
+        drivername = yx.pop(-1)        
+        totallines = ""
+        for d in yx:
+            totallines = totallines + d + "/"
+        totallines.strip("/")
+
+
+        drv = drivermgr.load(drivername,totallines) #Attempts to load the driver by yx[-1] (module name) with path yx[0]
         drivernames.append(modx[0])
         drivers.append(drv)
         drv.init(drivers, drivernames, configmgr, drivermgr, kernel)
@@ -114,8 +127,12 @@ class kernel:
                 continue
         except:
             kernel.panic(message)
+
+
     def reload_env():
-        good_modules = ["sys"]
+        good_modules = ["sys","requests","certifi","charset_normalizer","idna","urllib3"]
+
+
         s = drivermgr.basicload("sys")
         x = s.modules
 
