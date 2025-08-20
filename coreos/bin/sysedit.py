@@ -13,7 +13,7 @@ def init(drivers, drivernames, configmgr, drivermgr,kernel):
 
     display.printline("System Settings")
     display.printline("Kernel arguments: " + a)
-    display.printline("Please enter the setting file you want to edit, or type 'r' to restart into recovery.")
+    display.printline("Please enter the setting file you want to edit.")
     display.printline("Type 'q' to quit.")
     display.printline("")
     files = sysctl.dir(kernel.configpath)
@@ -22,18 +22,6 @@ def init(drivers, drivernames, configmgr, drivermgr,kernel):
         display.printline(str(count) + " - " + file.strip("\n"))
         count = count + 1
     x = input.getinput("? ")
-    if x == 'r' or x == "R":
-        config = configmgr.readconfig("config.cfg")
-        bootr = configmgr.getvalue(config, "boot_to_recovery")
-        recen = configmgr.getvalue(config, "recoveryenabled")
-        if not bootr == "1":
-            config = configmgr.setvalue(config, "boot_to_recovery", "1")
-            configmgr.writeconfig("config.cfg", config)
-        if not recen == "1":
-            config = configmgr.setvalue(config, "recoveryenabled", "1")
-            configmgr.writeconfig("recovery.cfg", config)
-        display.printline("Writing changes success!")
-        return
     if x == "q" or x == "Q":
         return
     try:

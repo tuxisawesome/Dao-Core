@@ -15,6 +15,7 @@ def validcheck(kernel):
             return False
     try:
         import requests
+        return True
     except:
         return False
 

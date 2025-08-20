@@ -10,36 +10,16 @@ def init(drivers,drivernames,configmgr,drivermgr,kernel):
 
 
 
-def recoveryf(display, mods, config):
-    recoveryenabled = configmgr.getvalue(config, "recoveryenabled")
-    if recoveryenabled == 0: recoveryenabled = False 
-    else: recoveryenabled = True
-
-    if not recoveryenabled:
-        x = configmgr.getvalue(mods, "sys")
-        y = x.split("/")
-        sysctl = drivermgr.load(y[1],y[0])
-        sysctl.reset()
-    else:
-        conf = config
-        bootr = configmgr.getvalue(conf, "boot_to_recovery")
-        if not bootr == "0":
-            conf = configmgr.setvalue(conf, "boot_to_recovery", "0")
-            configmgr.writeconfig("config.cfg", conf)
-        display.printline("Recovery Mode")
-        display.printline("Please restore this device and then reset.")
-
 
 def main(args):
-    isrecovery=False
     vdrivers = False
     if len(args) >= 1:
         for arg in args:
             arg = arg.lower().split("=")
-            if arg[0] == "isrecovery" and arg[1] == "true":
-                isrecovery = True;continue
-            if arg[0] == "path":
+            if arg[0] == "configpath":
                 kernel.configpath = arg[1];continue
+            if arg[0] == "driverpath":
+                kernel.driverpath = arg[1];continue
             if arg[0] == "verbosedrivers" and arg[1] == "true":
                 vdrivers = True;continue
             if arg[0] == "verbosedrivers" and arg[1] == "false":
@@ -66,15 +46,10 @@ def main(args):
     
 
     display.printline("Dao " + ver + " is starting up!")
-    bootr = configmgr.getvalue(config, "boot_to_recovery")
-    if bootr == "0": bootr = False 
-    else: bootr = True
-    if bootr or isrecovery:
-        recoveryf(display, mods, config)
-    else:
-        drivers,drivernames = load_modules(display,mods,verbosedrivers)
-        import init as start
-        start.init(display,init,verbosedrivers,configmgr,drivermgr,drivers,drivernames,kernel)
+    
+    drivers,drivernames = load_modules(display,mods,verbosedrivers)
+    import init as start
+    start.init(display,init,verbosedrivers,configmgr,drivermgr,drivers,drivernames,kernel)
     '''
     You can also use the default __import__ function as
     module = __import__(custom)
@@ -118,6 +93,7 @@ def load_modules(display,mods,verbosedrivers):
 class kernel:
     args=[]
     configpath="etc/"
+    driverpath = "lib/"
     def panic(message="Unknown"):
         try:
             print("The kernel has reached an unrecoverable error.")
@@ -151,15 +127,18 @@ class kernel:
 # Configmgr
 class configmgr:
     def readconfig(file,path=kernel.configpath):
-        with open(path + file, "r") as f:
-            x = f.readlines()
-            y = []
-            for line in x:
-                if line.startswith("#") or line.startswith("//") or line == "":
-                    continue
-                else:
-                    y.append(line.strip("\n"))
-            return y
+        try:
+            with open(path + file, "r") as f:
+                x = f.readlines()
+                y = []
+                for line in x:
+                    if line.startswith("#") or line.startswith("//") or line == "":
+                        continue
+                    else:
+                        y.append(line.strip("\n"))
+                return y
+        except:
+            kernel.panic("\nConfiguration path " + kernel.configpath + " invalid!")
 
     def writeconfig(file, config,path=kernel.configpath):
         with open(path + file, "w") as f:
@@ -238,9 +217,17 @@ class configmgr:
 
 #Drivermgr
 class drivermgr:
-    def load(name, path_in_lib):
-        sys.path.append("lib/" + path_in_lib)    
-        return __import__(name.strip("\n"))
+    def load(name, path_in_driverpath):
+        try:
+            sys.path.append(kernel.driverpath + path_in_driverpath)   
+        except:
+            kernel.panic("Driver path incorrect or does not exist: " + kernel.driverpath + path_in_driverpath)
+        try: 
+            x = __import__(name.strip("\n"))
+        except:
+            kernel.panic("\nDriver " + name.strip("\n") + " does not exist.\n" + "Driver path incorrect or does not exist: " + kernel.driverpath + path_in_driverpath)
+            kernel.panic("Driver " + name.strip("\n") + " does not exist.")
+        return x
 
     def defload(name, path):
         sys.path.append(path)    
