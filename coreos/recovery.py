@@ -1,5 +1,6 @@
 def boot(args):
     print("Recovery mode Shell")
+    return
 
 def init(drivers,drivernames,configmgr,drivermgr):
     display = drivers[drivernames.index("display")]

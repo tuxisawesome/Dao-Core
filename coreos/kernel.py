@@ -12,48 +12,63 @@ def init(drivers,drivernames,configmgr,drivermgr,kernel):
 
 
 def main(args):
-    vdrivers = False
-    if len(args) >= 1:
-        for arg in args:
-            arg = arg.lower().split("=")
-            if arg[0] == "configpath":
-                kernel.configpath = arg[1];continue
-            if arg[0] == "driverpath":
-                kernel.driverpath = arg[1];continue
-            if arg[0] == "verbosedrivers" and arg[1] == "true":
-                vdrivers = True;continue
-            if arg[0] == "verbosedrivers" and arg[1] == "false":
-                vdrivers = False;continue
-    
-    kernel.args = args
-    print(kernel.args)
-    mods = configmgr.readconfig("modules.cfg",kernel.configpath)
-    init = configmgr.readconfig("init.cfg",kernel.configpath)
-    config = configmgr.readconfig("config.cfg",kernel.configpath)
+        vdrivers = False
+        if len(args) >= 1:
+            for arg in args:
+                arg = arg.lower().split("=")
+                if arg[0] == "configpath":
+                    kernel.configpath = arg[1];continue
+                if arg[0] == "driverpath":
+                    kernel.driverpath = arg[1];continue
+                if arg[0] == "verbosedrivers" and arg[1] == "true":
+                    vdrivers = True;continue
+                if arg[0] == "verbosedrivers" and arg[1] == "false":
+                    vdrivers = False;continue
+        
+        kernel.args = args
+        print(kernel.args)
+        mods = configmgr.readconfig("modules.cfg",kernel.configpath)
 
-    # Establish constants
-    ver = configmgr.getvalue(config, "version")
-    verbosedrivers = configmgr.getvalue(config, "verbosedrivers")
-    if vdrivers == False:
-        if verbosedrivers == "0": verbosedrivers = False 
+        config = configmgr.readconfig("config.cfg",kernel.configpath)
+
+        # Establish constants
+        ver = configmgr.getvalue(config, "version")
+        verbosedrivers = configmgr.getvalue(config, "verbosedrivers")
+        if vdrivers == False:
+            if verbosedrivers == "0": verbosedrivers = False 
+            else: verbosedrivers = True
         else: verbosedrivers = True
-    else: verbosedrivers = True
 
-    # First load display module
-    x = configmgr.getvalue(mods, "display")
-    y = x.split("/")
-    display = drivermgr.load(y[1],y[0])
-    
 
-    display.printline("Dao " + ver + " is starting up!")
-    
-    drivers,drivernames = load_modules(display,mods,verbosedrivers)
-    import init as start
-    start.init(display,init,verbosedrivers,configmgr,drivermgr,drivers,drivernames,kernel)
-    '''
-    You can also use the default __import__ function as
-    module = __import__(custom)
-    '''
+        # First load display module
+        try:
+            x = configmgr.getvalue(mods, "display")
+            y = x.split("/")
+            display = drivermgr.load(y[1],y[0])
+        except:
+            display = kernel.configuration.modules.display
+        
+
+        display.printline("Dao " + ver + " is starting up!")
+        try:
+            drivers,drivernames = load_modules(display,mods,verbosedrivers)
+        except:
+            drivers = kernel.configuration.modules.modules
+            drivernames = kernel.configuration.modules.modulenames
+        sys.path.insert(1, 'sbin/')
+        try:
+            import init as start
+        except:
+            kernel.panic("Unable to find init at '/sbin/init")
+        try:
+            start.init(display,verbosedrivers,configmgr,drivermgr,drivers,drivernames,kernel)
+        except:
+            kernel.panic("init does not have init function or other error occoured")
+        '''
+        You can also use the default __import__ function as
+        module = __import__(custom)
+        '''
+
 
 
 def load_modules(display,mods,verbosedrivers):
@@ -93,7 +108,20 @@ def load_modules(display,mods,verbosedrivers):
 class kernel:
     args=[]
     configpath="etc/"
-    driverpath = "lib/"
+    driverpath = "lib/"    
+
+    class configuration:
+        defconfig = ["version=1.0","verbosedrivers=1"]
+        class modules:
+            class display:
+                def printline(str):
+                    print(str)
+            modules = [display]
+            modulenames = ["display"]
+
+
+
+    verbosedrivers=False
     def panic(message="Unknown"):
         try:
             print("The kernel has reached an unrecoverable error.")
@@ -106,21 +134,115 @@ class kernel:
 
 
     def reload_env():
-        good_modules = ["sys","requests","certifi","charset_normalizer","idna","urllib3"]
-
+        good_modules = ["sys","requests","certifi","charset_normalizer","idna","urllib3","socket","encodings"]
 
         s = drivermgr.basicload("sys")
         x = s.modules
 
         try:
+            
             for mod in x:
-                #display.printline("*   '" + mod + "' is reloaded.")
                 if mod in good_modules: continue
+                if kernel.verbosedrivers: print("*   '" + mod + "' is reloaded.")
                 del s.modules[mod]
                 del mod
                             
         except:
             kernel.reload_env()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -138,7 +260,9 @@ class configmgr:
                         y.append(line.strip("\n"))
                 return y
         except:
-            kernel.panic("\nConfiguration path " + kernel.configpath + " invalid!")
+            if file == "config.cfg":
+                return kernel.configuration.defconfig
+            return None
 
     def writeconfig(file, config,path=kernel.configpath):
         with open(path + file, "w") as f:

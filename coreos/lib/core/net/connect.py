@@ -5,6 +5,7 @@ def init(drivers,drivernames,configmgr,drivermgr,kernel):
         display = drivers[drivernames.index("display")]
     except:
         print("!! Please place net-connect after display.")
+        return
     connect(display=display,kernel=kernel)
 
 

@@ -29,6 +29,7 @@ def selector(netx):
                 continue
             elif x == "help":
                 bios.branding()
+                print("Commands: 'net [on/off], net'")
             elif x == "net on":
                 net = True
                 print("Net is on")
@@ -46,16 +47,18 @@ def selector(netx):
         try:
             if net:
                 import requests
+                import socket
             bootloader = bios.defload(boot,".") 
         except:
             print(boot + " is not a valid application.")
             selector(net)
         try:
             bootloader.boot(args)
-        except:
+        except Exception as e:
             print("The operating system has reached a critical error and has reset.")
+            print(e)# TODO: Fix
             bios.branding()
-            selector()
+            selector(net)
 
 
 class bios:
