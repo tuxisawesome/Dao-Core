@@ -77,8 +77,8 @@ def init(drivers, drivernames, configmgr, drivermgr,kernel):
                     except:
                         display.printline("File may be corrupted!\nPlease check the arguments the file is taking.")
                         continue
-            except:
-                display.printline("")
+            except Exception as e:
+                display.printline(e)
                 continue
             
     else:
