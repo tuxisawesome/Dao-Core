@@ -26,7 +26,7 @@ def init(display, verbosedrivers,configmgr,drivermgr,drivers,drivernames,kernel)
         yx = y.split("/")
         drv = drivermgr.defload(yx[1],yx[0])
         if verbosedrivers:
-            display.printline("*   Executing startup task " + progx[0] + " from " + y)
+            display.printline("**  Executing startup task " + progx[0] + " from " + y)
         try:
             drv.init(drivers, drivernames, configmgr, drivermgr,kernel)
         except:

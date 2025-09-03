@@ -19,3 +19,7 @@ def powerdown():
 def reset():
     import sys
     sys.exit(0)
+
+def rmfile(full_path):
+    import os
+    os.remove(full_path)

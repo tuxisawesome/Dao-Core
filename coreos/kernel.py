@@ -35,9 +35,9 @@ def main(args):
         ver = configmgr.getvalue(config, "version")
         verbosedrivers = configmgr.getvalue(config, "verbosedrivers")
         if vdrivers == False:
-            if verbosedrivers == "0": verbosedrivers = False 
-            else: verbosedrivers = True
-        else: verbosedrivers = True
+            if verbosedrivers == "0": verbosedrivers = False; kernel.verbosedrivers = False
+            else: verbosedrivers = True;kernel.verbosedrivers = True
+        else: verbosedrivers = True;kernel.verbosedrivers = True
 
 
         # First load display module
@@ -61,6 +61,7 @@ def main(args):
         except:
             kernel.panic("Unable to find init at '/sbin/init")
         try:
+            display.printline("*   Loading init at /sbin/init")
             start.init(display,verbosedrivers,configmgr,drivermgr,drivers,drivernames,kernel)
         except:
             kernel.panic("init does not have init function or other error occoured")
@@ -134,7 +135,7 @@ class kernel:
 
 
     def reload_env():
-        good_modules = ["sys","requests","certifi","charset_normalizer","idna","urllib3","socket","encodings"]
+        good_modules = ["sys","requests","certifi","charset_normalizer","idna","urllib3","socket","encodings","__future__","collections","json","encodings.idna","idna","logging","re","typing","warnings","zlib","contextlib","http","email","random","datetime","urllib","functools","math","types","ipaddress","calendar","base64","binascii","string","quopri","enum","hashlib","hmac","select","selectors","ssl","zstandard","queue","threading","importlib","csv","pathlib","zipfile","operator","textwrap","copy","unicodedata","dis","inspect","platform","mimetypes","tempfile","weakref","atexit","errno","array","locale","fnmatch","ntpath","opcode","stringprep"]
 
         s = drivermgr.basicload("sys")
         x = s.modules

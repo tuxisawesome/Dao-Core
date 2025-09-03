@@ -30,7 +30,8 @@ def get_web_data(website,kernel):
         verify = True
     try:
         response = requests.get(website,verify=verify)
-    except:
+    except Exception as e:
+        print(e)
         return -1,None
     response_code=response.status_code
     response_content=response.content
@@ -39,3 +40,4 @@ def get_web_data(website,kernel):
 def connect(display,kernel,ssid="",password="",):
     if not validcheck: return
     display.printline("**  Net-connect will assume that the internet is already connected to the machine.") 
+
