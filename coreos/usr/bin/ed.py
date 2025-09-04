@@ -1,3 +1,4 @@
+#1.1
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
@@ -232,5 +233,3 @@ def init(drivers,drivernames,configmgr,drivermgr,kernel):
         except Exception as e:
             display.printline("?")
             sys.stderr.write(f"An unexpected error occurred: {e}\n")
-
-
