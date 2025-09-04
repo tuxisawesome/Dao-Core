@@ -7,7 +7,11 @@ def init(drivers,drivernames,configmgr,drivermgr,kernel):
     interactive = drivers[drivernames.index("input")]
     sysctl = drivers[drivernames.index("sys")]
     argv = configmgr.getvalue(configmgr.readconfig("env.cfg"), "argv")
+
+
     display.printline("AppGallery " + str(v))
+
+
     if argv == "-R" or argv == "-r":
         display.printline("!!! REMOVAL MODE !!!")
         removal_mode = True
@@ -16,7 +20,10 @@ def init(drivers,drivernames,configmgr,drivermgr,kernel):
     if argv == "-s" or argv == "-S":
         display.printline("** Syncing (updating) on-device applications")
         sync_apps(display,net,sysctl,kernel)
+        display.printline("** Please restart or run 'env-reload' to properly push changes.")
         return
+    
+
     website_root = repo_root
     response_code,response_data = net.get_web_data(website_root + "apps.txt",kernel)
     if response_code == -255:
@@ -25,17 +32,20 @@ def init(drivers,drivernames,configmgr,drivermgr,kernel):
     if response_code == -1:
         display.printline("Server down.")
         return
+    
     apps,appnames,vers,path = read_repofile(str(response_data))
 
     display.printline("=== APPS ===")
     for appx in appnames:
         display.printline(appx + "  V:" + vers[appnames.index(appx)])
     app = interactive.getinput("Please enter the app or press q to quit: ")
+
     if app == "q" or app == "Q":
         return
     if app not in appnames:
         display.printline("This app does not exist.")
         return
+    
     directory = path[appnames.index(app)]
     if not removal_mode:
         install_app(website_root,apps,appnames,app,directory,display,net,kernel)
@@ -51,7 +61,7 @@ def download_file(website,directory,filename,net,kernel):
     if response_code != 200:
         if response_code == -255:
             return -255
-        elif response_code == "404":
+        elif response_code == 404:
             return 404
         return -1
     with open(directory + "/" + filename, "wb") as file:
@@ -109,5 +119,10 @@ def sync_apps(display,net,sysctl,kernel):
     for paths in path:
             for appe in apps:
                 if appe in sysctl.dir(paths):
+                    with open(paths + appe, "r") as txt:
+                        if float(txt.readlines()[0][1:]) <= float(vers[apps.index(appe)]):
+                            continue
+                        txt.close()
                     directory = path[apps.index(appe)]
                     install_app(website_root,apps,appnames,appnames[apps.index(appe)],directory,display,net,kernel)
+
