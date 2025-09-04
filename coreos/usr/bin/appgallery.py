@@ -1,3 +1,4 @@
+#1.0
 v = 1.0
 repo_root = "https://raw.githubusercontent.com/tuxisawesome/DaoDownloader/refs/heads/main/"
 
