@@ -1,5 +1,5 @@
-#1.1
-v = 1.1
+#1.2
+v = 1.2
 repo_root = "https://raw.githubusercontent.com/tuxisawesome/DaoDownloader/refs/heads/main/"
 
 def init(drivers,drivernames,configmgr,drivermgr,kernel):
@@ -53,7 +53,7 @@ def init(drivers,drivernames,configmgr,drivermgr,kernel):
     if not removal_mode:
         install_app(website_root,apps,appnames,app,directory,display,net,kernel)
     else:
-        sysctl.rmfile(directory + apps[appnames.index(app)])
+        sysctl.rmfile(directory)
         display.printline("Application Removed.")
 
 
@@ -137,17 +137,19 @@ def sync_apps(display,net,sysctl,kernel):
         display.printline("Server down.")
         return
     apps,appnames,vers,path = read_repofile(str(response_data))
+    found_updates = False
     for paths in path:
             pathsx = remove_trailing_filename(paths)
             for appe in apps:
                 if appe in sysctl.dir(pathsx):
-                    with open(paths, "r") as txt:
+                    with open(pathsx + appe, "r") as txt:
                         if float(txt.readlines()[0][1:]) >= float(vers[apps.index(appe)]):
                             continue # The version of the app is the same or greater than the one on the server
                         txt.close()
+                    
                     directory = path[apps.index(appe)]
                     install_app(website_root,apps,appnames,appnames[apps.index(appe)],directory,display,net,kernel)
-
+                    found_updates = True
 
 def system_update_backend(website_root,net,sysctl,kernel,display):
     response_code,response_data = net.get_web_data(website_root + "apps.txt",kernel)
