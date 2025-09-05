@@ -7,3 +7,6 @@ def printline(text):
 
 def clear():
     pass
+
+def getdimmentions():
+    return 0,0

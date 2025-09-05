@@ -14,6 +14,11 @@ def init(drivers, drivernames, configmgr, drivermgr,kernel):
 def printline(text):
     print(text)
 
+def getdimmentions():
+    import os
+    columns, rows = os.get_terminal_size()
+    return rows,columns
+
 def clear():
     import os
     os.system("clear||cls")
