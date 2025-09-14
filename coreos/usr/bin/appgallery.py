@@ -1,5 +1,5 @@
-#1.2
-v = 1.2
+#1.3
+v = 1.3
 repo_root = "https://raw.githubusercontent.com/tuxisawesome/DaoDownloader/refs/heads/main/"
 
 def init(drivers,drivernames,configmgr,drivermgr,kernel):
@@ -76,7 +76,7 @@ def system_update(drivers,drivernames,configmgr,drivermgr,kernel):
     sysctl = drivers[drivernames.index("sys")]
     packagekit = drivers[drivernames.index("packagekit")]
     packagekit.configuration.repo_root = repo_root
-    
+
     display.printline("System update")
     display.printline("Please type 'y' to confirm the update.")
 

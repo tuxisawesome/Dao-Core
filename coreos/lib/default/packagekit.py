@@ -1,4 +1,4 @@
-#1.2
+#1.3
 class configuration:
     repo_root = "https://raw.githubusercontent.com/tuxisawesome/DaoDownloader/refs/heads/main/"
 
