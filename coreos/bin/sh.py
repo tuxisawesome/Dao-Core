@@ -12,6 +12,8 @@ def init(drivers, drivernames, configmgr, drivermgr,kernel):
     display = drivers[drivernames.index("display")]
     if interactive == "0": interactive = False 
     else: interactive = True
+    kernel_arguments = kernel.args
+    if "interactive=false" in kernel_arguments: interactive = False
     if interactive:
         continues = True
         while continues:
@@ -20,7 +22,7 @@ def init(drivers, drivernames, configmgr, drivermgr,kernel):
                 if x == "": continue
 
                 if x == "exit":
-                    continue
+                    return -1
 
                 if x == "poweroff":
                     sys = drivers[drivernames.index("sys")]
