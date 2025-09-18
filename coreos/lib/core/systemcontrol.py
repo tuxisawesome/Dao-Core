@@ -1,6 +1,21 @@
 def init(drivers, drivernames, configmgr, drivermgr,kernel):
     pass
 
+def mkdir(path):
+    try:
+        import os
+        os.mkdir(path)
+        return 0
+    except:
+        return 255
+    
+def makedirs(path):
+    try:
+        import os
+        os.makedirs(path)
+        return 0
+    except:
+        return 255
 
 def dir(path):
     try:
@@ -9,8 +24,11 @@ def dir(path):
         return contents
     except FileNotFoundError:
         return 1
+    except NotADirectoryError:
+        return 2
     except Exception as e:
         return 255
+
     
 def powerdown():
     import sys
