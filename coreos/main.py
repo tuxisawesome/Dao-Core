@@ -1,43 +1,40 @@
-import time
+import time # Dao BIOS
 
-net = True
+
+
+
 v = "1.0"
+class Modules:
+    def net(x):
+        if x.lower() == "net on":
+            bios.configuration.net = True
+            print("Net is on")
+        elif x.lower() == "net off":
+            bios.configuration.net = False
+            print("Net is off")
+        else:
+            print(bios.configuration.net)
 
-def startup():
+    def help(x):
+        bios.branding()
+        print("Commands: 'net [on/off], net, info, eval '[code]' '")
+    
+    def info(x): import os;print(os.uname())
 
-    bios.branding()
-    print("Network is on: " + str(net))
-    print("Press Ctrl + C within three seconds to change the boot order.")
-    try:
-        time.sleep(3)
-        print("Booting 'boot.py'")
-        try:
-            if net:
-                import requests
-            bios.defload("boot",".").boot([])
-        except:
-            print("The operating system has reached a critical error and has reset.")
-    except:
-        selector(net)
-
-def selector(netx):
-        net = netx
+    def selector(netx):
+        bios.configuration.net = netx
         stop = False
+        Modules.__dict__.keys()
         while not stop:
             x = input(">>> ").lower()
             if len(x) == 0:
                 continue
-            elif x == "help":
-                bios.branding()
-                print("Commands: 'net [on/off], net'")
-            elif x == "net on":
-                net = True
-                print("Net is on")
-            elif x == "net off":
-                net = False
-                print("Net is off")
-            elif x.startswith("net"):
-                print(net)
+            if x.split(" ")[0] in Modules.__dict__.keys():
+                mod = x.split(" ")[0]
+                bios.load_module(mod,x)
+            
+            elif x.startswith("about"):
+                pass
             else:
                 break
 
@@ -45,23 +42,47 @@ def selector(netx):
         boot = args.pop(0)
         
         try:
-            if net:
+            if bios.configuration.net:
                 import requests
                 import socket
             bootloader = bios.defload(boot,".") 
         except:
             print(boot + " is not a valid application.")
-            selector(net)
+            Modules.selector(bios.configuration.net)
         try:
             bootloader.boot(args)
         except Exception as e:
             print("The operating system has reached a critical error and has reset.")
             print(e)# TODO: Fix
             bios.branding()
-            selector(net)
+            Modules.selector(bios.configuration.net)
 
+
+def startup():
+
+    bios.branding()
+    print("Network is on: " + str(bios.configuration.net))
+    print("Press Ctrl + C within three seconds to change the boot order.")
+    try:
+        time.sleep(3)
+        print("Booting 'boot.py'")
+        try:
+            if bios.configuration.net:
+                import requests
+            bios.defload("boot",".").boot([])
+        except:
+            print("The operating system has reached a critical error and has reset.")
+    except:
+        Modules.selector(bios.configuration.net)
 
 class bios:
+    class configuration:
+        net = True
+        evalglobals = {}
+    
+    def load_module(name,x):
+        return Modules.__dict__.get(name).__call__(x)
+
     def defload(name, path):
         import sys
         sys.path = []
