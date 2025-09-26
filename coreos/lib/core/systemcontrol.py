@@ -41,3 +41,6 @@ def reset():
 def rmfile(full_path):
     import os
     os.remove(full_path)
+
+def uname():
+    import os;return str(os.uname())

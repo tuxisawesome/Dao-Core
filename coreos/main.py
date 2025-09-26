@@ -17,9 +17,13 @@ class Modules:
 
     def help(x):
         bios.branding()
-        print("Commands: 'net [on/off], net, info, eval '[code]' '")
+        print("Commands: '",end="")
+        for item in Modules.__dict__.keys():
+            if item.startswith("__") or item == "selector": continue
+            print("[" + item + "], ",end="")
+        print("'")
     
-    def info(x): import os;print(os.uname())
+    def info(x): import os;print(str(os.uname()))
 
     def selector(netx):
         bios.configuration.net = netx
