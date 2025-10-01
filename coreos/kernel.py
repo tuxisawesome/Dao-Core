@@ -50,15 +50,17 @@ def main(args):
             y = x.split("/")
             display = drivermgr.load(y[1],y[0])
         except:
-            display = kernel.configuration.modules.display
+            display = kernel.configuration.modules.display # Fallback builtin display driver
         
 
         display.printline("Dao " + ver + " is starting up!")
         try:
             drivers,drivernames = load_modules(display,mods,verbosedrivers)
+            kernel.configuration.modules.modules = drivers
+            kernel.configuration.modules.modulenames = drivernames
         except:
-            drivers = kernel.configuration.modules.modules
-            drivernames = kernel.configuration.modules.modulenames
+            drivers = kernel.configuration.modules.modules  # Fallback builtin modules
+            drivernames = kernel.configuration.modules.modulenames # Fallback builtin modulenames
         sys.path.insert(1, 'sbin/')
         try:
             import init as start
@@ -66,7 +68,7 @@ def main(args):
             kernel.panic("Unable to find init at '/sbin/init")
         try:
             display.printline("*   Loading init at /sbin/init")
-            start.init(display,verbosedrivers,configmgr,drivermgr,drivers,drivernames,kernel)
+            start.init(display,verbosedrivers,configmgr,drivermgr,kernel.configuration.modules.modules,kernel.configuration.modules.modulenames,kernel)
         except:
             kernel.panic("init does not have init function or other error occoured")
         '''
@@ -117,8 +119,11 @@ class kernel:
     driverpath = "lib/"    
 
     class configuration:
-        defconfig = ["version=1.0","verbosedrivers=1"]
-        class modules:
+        defconfig = ["version=1.0","verbosedrivers=1"]# Fallback for config.cfg file
+        definitconfig = ["bp=bin/basicprogram"]# Fallback for init.cfg file
+        defaults = {"config.cfg": defconfig,"init.cfg": definitconfig}# Definitions
+        
+        class modules: # Default modules
             class display:
                 def printline(str):
                     print(str)
@@ -267,8 +272,8 @@ class configmgr:
                         y.append(line.strip("\n"))
                 return y
         except:
-            if file == "config.cfg":
-                return kernel.configuration.defconfig
+            if file in kernel.configuration.defaults.keys():
+                return kernel.configuration.defaults.get(file,None)
             return None
 
     def writeconfig(file, config,path=kernel.configpath):
@@ -348,7 +353,7 @@ class configmgr:
 
 #Drivermgr
 class drivermgr:
-    def load(name, path_in_driverpath):
+    def load(name, path_in_driverpath): # Example: name = "print", path in driverpath = core/
         try:
             sys.path.append(kernel.driverpath + path_in_driverpath)   
         except:
