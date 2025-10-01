@@ -30,7 +30,6 @@ def main(args):
                     vdrivers = False;continue
         
         kernel.args = args
-        print(kernel.args)
         mods = configmgr.readconfig("modules.cfg",kernel.configpath)
 
         config = configmgr.readconfig("config.cfg",kernel.configpath)
@@ -134,6 +133,8 @@ class kernel:
 
     verbosedrivers=False
     def panic(message="Unknown"):
+        if "panic=false" in kernel.args:
+            return
         try:
             print("The kernel has reached an unrecoverable error.")
             print("Please force restart the computer.")
