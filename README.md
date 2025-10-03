@@ -2,8 +2,8 @@
 ### A application programming interface that (theoretically) allows Python programs to be truely cross-platform
 
 To start, execute
-`$ ./main.py`: Unix/Linux
-`python3 main.py`: Cross-platform
+`$ ./main`: Unix/Linux
+`python3 main.py`: Cross-platform (in coreos directory)
 Copy the contents of "coreos" to any micropython-enabled platform.
 
 This true cross-compatibility allows me to test web server changes without having to re-deploy my changes onto my microcontroller every time.

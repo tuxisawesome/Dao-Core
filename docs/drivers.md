@@ -3,6 +3,7 @@ All programs get `drivers, drivernames, configmgr, drivermgr, kernel` passed to 
 ### Core drivers
 #### Print - Default text output (display)
 Dependencies: None
+
 Format:
 ```
 def init():
@@ -20,6 +21,7 @@ def getdimmentions():
 
 #### Input - Default input read (input)
 Dependencies: None
+
 Format:
 ```
 def init():
@@ -30,6 +32,7 @@ def getinput(prompt):
 ```
 #### Systemcontrol - System functions (sys)
 Dependencies: None
+
 Format:
 ```
 def init():
@@ -63,6 +66,7 @@ def uname():
 ### Networking Drivers
 #### Net (net-connect)
 Dependencies: display
+
 Format:
 ```
 def init():
@@ -79,6 +83,7 @@ def connect(display,kernel,ssid,password):
 
 #### Serve (net-serve)
 Dependencies: net-connect
+
 Format:
 ```
 def init():
@@ -97,6 +102,7 @@ def socket(kernel):
 ### Shared Libraries
 #### Helper (helper)
 Dependencies: None
+
 Format:
 ```
 def init():
@@ -109,6 +115,7 @@ def sha256(data: str) -> str:
 
 #### Packagekit (packagekit)
 Dependencies: net-connect
+
 Format:
 ```
 class configuration:

@@ -9,6 +9,9 @@ panic=false             Turns off kernel panics - ADVANCED!
 ```
 #### Application-programmed parameters
 ```
+bin/sh:
+    interactive=false       Disables shell
+
 sbin/fsck:
     nofsck=true             Turns off file system continuity checking
 

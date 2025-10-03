@@ -22,6 +22,41 @@ class Modules:
             if item.startswith("__") or item == "selector": continue
             print("[" + item + "], ",end="")
         print("'")
+
+    def setenv(x):
+        commands = x.split(" ")
+        if len(commands) == 1: print("setenv bootargs [arguments]");return
+        if commands[1] == "bootargs":
+            commands.pop(0)
+            commands.pop(0)
+            bios.configuration.args = commands
+        else:
+            print("setenv bootargs [arguments]")
+
+    def printargs(x):
+        commands = x.split(" ")
+        if len(commands) == 1: print("printargs");return
+        if commands[1] == "bootargs": print(bios.configuration.args)
+        else: print("printenv bootargs");return
+
+
+    def bootflow(x=""):
+        commands = x.split(" ")
+        if len(commands) == 1:
+            print("bootflow info\nbootflow list\nbootflow boot\nbootflow select [bootflow]");return
+        if commands[1] == "select":
+            bios.configuration.next_to_boot = commands[2]
+        elif commands[1] == "info":
+            print(bios.configuration.next_to_boot)
+        elif commands[1] == "list":
+            bootoptions = get_python_files_os("./")
+            for option in bootoptions: print(option.rstrip(".py"))
+        elif commands[1] == "boot":
+            jump_to_os(bios.configuration.next_to_boot, bios.configuration.args)
+            import sys;sys.exit(0)
+        else:
+            print("bootflow info\nbootflow list\nbootflow boot\nbootflow select [bootflow]")
+        
     
     def info(x): import os;print(str(os.uname()))
 
@@ -38,13 +73,12 @@ class Modules:
                 bios.load_module(mod,x)
             
             elif x.startswith("about"):
-                pass
-            else:
-                break
-
-        args = x.split(" ")
-        boot = args.pop(0)
+                bios.branding()
+            
         
+        
+
+def jump_to_os(boot,args):
         try:
             if bios.configuration.net:
                 import requests
@@ -79,10 +113,31 @@ def startup():
     except:
         Modules.selector(bios.configuration.net)
 
+
+
+
+
+def get_python_files_os(directory_path):
+    import os
+    python_files = []
+    try:
+        # List all entries in the directory
+        all_entries = os.listdir(directory_path)
+        for entry in all_entries:
+            full_path = os.path.join(directory_path, entry)
+            # Check if it's a file and ends with .py
+            if os.path.isfile(full_path) and entry.endswith(".py"):
+                python_files.append(entry)
+    except:
+        print(f"Error: The directory '{directory_path}' does not exist.")
+    return python_files
+
+
+
+
+
 class bios:
-    class configuration:
-        net = True
-        evalglobals = {}
+
     
     def load_module(name,x):
         return Modules.__dict__.get(name).__call__(x)
@@ -96,6 +151,13 @@ class bios:
         print("Dao Bios")
         print("Version " + v)
     
+
+    class configuration:
+        args = []
+        next_to_boot = "boot"
+        net = True
+        evalglobals = {}
+
 
 if __name__ == "__main__":
     startup()
