@@ -37,7 +37,7 @@ def get_web_data(website,kernel):
     response_content=response.content
     return response_code,response_content
     
-def connect(display,kernel,ssid="",password="",):
+def connect(display,kernel,ssid="",password=""):
     if not validcheck: return
     display.printline("**  Net-connect will assume that the internet is already connected to the machine.") 
 
