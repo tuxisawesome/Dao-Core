@@ -6,11 +6,14 @@ Format:
 def init():
     (initialization code)
 
-def print(text):
+def printline(text):
     (prints text on screen)
 
 def clear():
     (clears screen)
+
+def getdimmentions():
+    (Gets dimmentions of screen), returns rows,columns
 ```
 
 #### Input - Default input read (Keyboard)
@@ -22,11 +25,19 @@ def init():
 def getinput(prompt):
     (Gets input with prompt [prompt]) and returns string
 ```
-#### System Control - System functions (sysctl)
+#### System Control - System functions (systemcontrol)
 Format:
 ```
 def init():
     (initialization code)
+
+def mkdir(path):
+    (Creates a directory.)
+    (Returns 0 if directory creation is successfull, and 255 if it failed.)
+
+def mkdirs(path):
+    (Recursively creates directories)
+    (Returns 0 if directory creation is successfull, and 255 if it failed.)
 
 def dir():
     (directory listing. Returns a list of directories)
@@ -37,4 +48,10 @@ def powerdown():
 
 def reset():
     (reset function. should not return)
+
+def rmfile(full_path):
+    (Removes a file.)
+
+def uname():
+    (Returns system information about the computer.)
 ```
