@@ -20,3 +20,18 @@ def powerdown():
 def reset():
     import machine
     machine.reset()
+
+def mkdir(path):
+    try:
+        import os
+        os.mkdir(path)
+        return 0
+    except:
+        return 255
+
+def rmfile(full_path):
+    import os
+    os.remove(full_path)
+
+def uname():
+    import os;return str(os.uname())
