@@ -31,6 +31,7 @@ def dir(path):
 
     
 def powerdown():
+    import
     import sys
     sys.exit(0)
 
@@ -43,4 +44,4 @@ def rmfile(full_path):
     os.remove(full_path)
 
 def uname():
-    import os;return str(os.uname())
+    import platform;return str(platform.platform())

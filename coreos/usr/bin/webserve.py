@@ -3,7 +3,10 @@
 
 def init(drivers,drivernames,configmgr,drivermgr,kernel):
     display = drivers[drivernames.index("display")]
-    serve = drivers[drivernames.index("net-serve")]
+    try:
+        serve = drivers[drivernames.index("net-serve")]
+    except:
+        display.printline("Please install 'server' networking drivers and then try again.")
     if not serve.validcheck(kernel):
         display.printline("No internet. No server.")
         return

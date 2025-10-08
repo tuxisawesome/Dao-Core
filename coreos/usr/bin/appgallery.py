@@ -4,10 +4,16 @@ repo_root = "https://raw.githubusercontent.com/tuxisawesome/DaoDownloader/refs/h
 
 def init(drivers,drivernames,configmgr,drivermgr,kernel):
     display = drivers[drivernames.index("display")]
-    net = drivers[drivernames.index("net-connect")]
+    try:
+        net = drivers[drivernames.index("net-connect")]
+    except:
+        display.printline("No internet driver found.");return
     interactive = drivers[drivernames.index("input")]
     sysctl = drivers[drivernames.index("sys")]
-    packagekit = drivers[drivernames.index("packagekit")]
+    try:
+        packagekit = drivers[drivernames.index("packagekit")]
+    except:
+        display.printline("Package manager backend not found. Please reinstall the driver and reboot.")
     packagekit.configuration.repo_root = repo_root
     argv = configmgr.getvalue(configmgr.readconfig("env.cfg"), "argv")
 

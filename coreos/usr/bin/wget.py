@@ -2,7 +2,10 @@
 
 def init(drivers,drivernames,configmgr,drivermgr,kernel):
     display = drivers[drivernames.index("display")]
-    net = drivers[drivernames.index("net-connect")]
+    try:
+        net = drivers[drivernames.index("net-connect")]
+    except:
+        display.printline("Please install a networking driver and then try again.")
     argv = configmgr.getvalue(configmgr.readconfig("env.cfg"), "argv")
     if argv == "null":
         display.printline("Please provide a website argument.")

@@ -43,7 +43,7 @@ def main(args):
         else: verbosedrivers = True;kernel.verbosedrivers = True
 
 
-        # First load display module
+        # Loads display module
         try:
             x = configmgr.getvalue(mods, "display")
             y = x.split("/")
@@ -53,21 +53,22 @@ def main(args):
         
 
         display.printline("Dao " + ver + " is starting up!")
-        try:
+        try:    # Loads other modules into drivers,drivernames
             drivers,drivernames = load_modules(display,mods,verbosedrivers)
             kernel.configuration.modules.modules = drivers
             kernel.configuration.modules.modulenames = drivernames
         except:
             drivers = kernel.configuration.modules.modules  # Fallback builtin modules
             drivernames = kernel.configuration.modules.modulenames # Fallback builtin modulenames
+
         sys.path.insert(1, 'sbin/')
-        try:
+        try:# Load init server
             import init as start
         except:
             kernel.panic("Unable to find init at '/sbin/init")
-        try:
+        try:# Jump to init server, needs a lot of arguments to have the proper environment to execute programs
             display.printline("*   Loading init at /sbin/init")
-            start.init(display,verbosedrivers,configmgr,drivermgr,kernel.configuration.modules.modules,kernel.configuration.modules.modulenames,kernel)
+            start.init(display,verbosedrivers,configmgr,drivermgr,kernel.configuration.modules.modules,kernel.configuration.modules.modulenames,kernel) 
         except:
             kernel.panic("init does not have init function or other error occoured")
         '''
@@ -120,19 +121,19 @@ class kernel:
     class configuration:
         defconfig = ["version=1.0","verbosedrivers=1"]# Fallback for config.cfg file
         definitconfig = ["bp=bin/basicprogram"]# Fallback for init.cfg file
-        defaults = {"config.cfg": defconfig,"init.cfg": definitconfig}# Definitions
+        defaults = {"config.cfg": defconfig,"init.cfg": definitconfig}# Definitions for default files
         
         class modules: # Default modules
             class display:
                 def printline(str):
                     print(str)
-            modules = [display]
-            modulenames = ["display"]
+            modules = [display] # Contains a reference to every default module in a list
+            modulenames = ["display"]   # Human-readable name for each module in the list
 
 
 
     verbosedrivers=False
-    def panic(message="Unknown"):
+    def panic(message="Unknown"):   # Executes a kernel panic, halting code execution
         if "panic=false" in kernel.args:
             return
         try:
@@ -147,7 +148,7 @@ class kernel:
 
     def reload_env():
         good_modules = ["sys","requests","certifi","charset_normalizer","idna","urllib3","socket","encodings","__future__","collections","json","encodings.idna","idna","logging","re","typing","warnings","zlib","contextlib","http","email","random","datetime","urllib","functools","math","types","ipaddress","calendar","base64","binascii","string","quopri","enum","hashlib","hmac","select","selectors","ssl","zstandard","queue","threading","importlib","csv","pathlib","zipfile","operator","textwrap","copy","unicodedata","dis","inspect","platform","mimetypes","tempfile","weakref","atexit","errno","array","locale","fnmatch","ntpath","opcode","stringprep",
-                        "decimal"]
+                        "decimal","platform"]
 
         s = drivermgr.basicload("sys")
         x = s.modules

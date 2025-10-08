@@ -7,10 +7,8 @@ def dir(path):
         import os
         contents = os.listdir(path)
         return contents
-    except FileNotFoundError:
+    except:
         return 1
-    except Exception as e:
-        return 255
     
 def powerdown():
     print("It is now safe to turn off this computer.")
@@ -34,4 +32,4 @@ def rmfile(full_path):
     os.remove(full_path)
 
 def uname():
-    import os;return str(os.uname())
+    import platform;return str(platform.platform())
