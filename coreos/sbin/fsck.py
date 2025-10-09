@@ -4,8 +4,7 @@ def init(drivers,drivernames,configmgr,drivermgr,kernel): #  FSCK - File System 
     for arg in kargs:
         if arg.startswith("nofsck="):
             return
-    v = 1.0 # Todo: check file hashes
-    sys = drivers[drivernames.index("sys")]
+    v = 1.0
     display = drivers[drivernames.index("display")]
     helper = drivers[drivernames.index("helper")]
     display.printline("**  fsck " + str(v))

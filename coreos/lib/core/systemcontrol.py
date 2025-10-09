@@ -31,7 +31,6 @@ def dir(path):
 
     
 def powerdown():
-    import
     import sys
     sys.exit(0)
 

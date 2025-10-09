@@ -368,8 +368,9 @@ class drivermgr:
         return x
 
     def defload(name, path):
-        sys.path.append(path)    
-        return __import__(name.strip("\n"))
+        sys.path.append(path + "/") 
+        d = __import__(name.strip("\n"))
+        return d
     
     def basicload(name):
         return __import__(name.strip("\n"))
