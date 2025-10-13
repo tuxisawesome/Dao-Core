@@ -2,48 +2,38 @@ def init(drivers,drivernames,configmgr,drivermgr,kernel):
     # Initialize VFS
     pass
 
-
 def mount(device,mountpoint):
-    try:
-        import vfs
-        vfs.mount(device,mountpoint)
-        return 0
-    except:return 1
-
+    os.system("mount "+ device + " " + mountpoint)
+    
 def get_mounted_devices():
-    try:
-        import vfs
-        list = vfs.mount()
-        return list
-    except:
-        return None
+    with open('/proc/mounts','r') as f:
+        mounts = [line.split()[1] for line in f.readlines()]  
+        devs = [line.split()[0] for line in f.readlines()]  
+
+    list = []
+    for mount in mounts:
+        d = (mount,devs[mounts.index(mount)])
+        list.append(d)
+    return list
 
 def umount(mountpoint):
-    try:
-        import vfs
-        vfs.umount(mountpoint)
-        return 0
-    except:
-        return 1
+    import os
+    os.system("umount " + mountpoint)
+
 class mkfs:
     def fat(device):
-        try:
-            import vfs
-            vfs.VfsFat.mkfs(device)
-            return 0
-        except: return 1
+        import os
+        os.system("mkfs.vfat -F32 " + device)
     
     def Lfs1(device):
-        try: import vfs;vfs.VfsLfs1.mkfs(device);return 0
-        except: return 1
+        print("Lfs is not supported on a unix-based root")
     
     def Lfs2(device):
-        try: import vfs;vfs.VfsLfs2.mkfs(device);return 0
-        except: return 1
+        print("Lfs2 is not supported on a unix-based root")
     
 
 
-class RAMDisk:
+class RAMDisk:                                              # I believe this is practically a useless function
     def __init__(self, block_size, num_blocks):
         self.block_size = block_size
         self.data = bytearray(block_size * num_blocks)
