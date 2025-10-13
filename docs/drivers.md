@@ -99,6 +99,55 @@ def socket(kernel):
     (Else, return None)
 ```
 
+### Device-specific Drivers
+#### Micropython (Virtual File System FUSE)
+Dependencies: None
+
+Format:
+```
+def init():
+    pass
+
+def mount(device,mountpoint):
+    (Mount a device to mountpoint mountpoint.)
+    (The device object can be a ramdisk, flash memory, or other io object that the port supports)
+    (Returns 0 for a successful mount or a 1 for a unsuccessful mount)
+
+def get_mounted_devices():
+    (Returns a list of lists with mounts for each)
+    (Example: [("fs0:","/mnt")])
+
+def umount(mountpoint):
+    (Unmounts a filesystem with mountpoint [mountpoint])
+    (Returns 0 for a successful unmount or 1 for a failed unmount)
+
+class mkfs: (Make filesystem)
+    def fat(device):
+        (Creates a fat filesystem on device)
+        (returns 0 for success or 1 for fail)
+    def Lfs1(device):
+        (Creates a LittleFS filesystem on device)
+        (returns 0 for success or 1 for fail)
+    def Lfs2(device):
+        (Creates a LittleFS v2 filesystem on device)
+        (returns 0 for success or 1 for fail)
+
+class RAMDisk:
+    def __init__(self,block_size,num_blocks):
+        (Allocates memory for a ramdisk)
+    
+    def readblocks(self,block_num,buf,offset=0):
+        (Writes data into a instance of buf (buffer))
+    
+    def writeblocks(self,block_num,buf,offset=None):
+        (Writes data from buffer to ramdisk)
+    
+
+    def ioctl(self,op,arg):
+        (Helper function)
+
+```
+
 ### Shared Libraries
 #### Helper (helper)
 Dependencies: None
