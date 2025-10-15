@@ -60,8 +60,9 @@ def init(drivers, drivernames, configmgr, drivermgr,kernel):
                         except Exception as e:
                             display.printline("File not found! " + str(e))
                             continue
-                except:
+                except Exception as e:
                     display.printline("ERROR!")
+                    print(e)
                     continue
                 if debug:
                     x = y.init(drivers, drivernames, configmgr, drivermgr,kernel)

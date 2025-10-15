@@ -70,3 +70,8 @@ class RAMDisk:
             return self.block_size
         if op == 6: # block erase
             return 0
+
+
+def vfsPosix(root="/"):
+    import vfs
+    return vfs.VfsPosix(root)
