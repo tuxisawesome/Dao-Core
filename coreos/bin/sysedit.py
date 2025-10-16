@@ -65,6 +65,7 @@ def init(drivers, drivernames, configmgr, drivermgr,kernel):
         display.printline("Writing changes to settings...")
         configmgr.writeconfig(sysctl.dir('etc/')[int(x)], file)
         display.printline("Changes written successfully.")
+        display.printline("For edits to critical system files:\n      - Make sure to run 'bootsign' to re-sign the critical boot files.")
     except:
         display.printline("An unknown error occoured.")
     

@@ -118,6 +118,8 @@ class kernel:
     configpath="etc/"
     driverpath = "lib/"    
 
+    sip=True # Enables system integrity protection
+
     class configuration:
         defconfig = ["version=1.0","verbosedrivers=1"]# Fallback for config.cfg file
         definitconfig = ["bp=bin/basicprogram"]# Fallback for init.cfg file
