@@ -1,0 +1,2 @@
+# README
+Localization information for applications get placed in this directory.
