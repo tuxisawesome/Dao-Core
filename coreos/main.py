@@ -54,7 +54,7 @@ def selector(netx):
             print(boot + " is not a valid application.")
             selector(net)
         try:
-            bootloader.boot(args)
+            bootloader.boot(args)# boot os   
         except Exception as e:
             print("The operating system has reached a critical error and has reset.")
             print(e)# TODO: Fix

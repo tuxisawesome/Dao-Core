@@ -13,7 +13,7 @@ bin/sh:
     interactive=false       Disables shell
 
 sbin/fsck:
-    nofsck=true             Turns off file system continuity checking
+    nofsck=true             Turns off file system continuity checking. Does not work if SIP is enabled.
 
 lib/core/net/[net,serve]
     net=false               Turns off internet no matter if it is allowed or not in bios
