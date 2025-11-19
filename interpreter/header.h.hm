@@ -1,0 +1,11 @@
+# Headerfile
+# Systemcall 1 is printf
+trans 1 "printf"
+# Systemcall 2 is scanf (input)
+trans 2 "scanf"
+
+trans 3 "add"
+trans 4 "sub"
+trans 5 "mul"
+trans 6 "div"
+;;
