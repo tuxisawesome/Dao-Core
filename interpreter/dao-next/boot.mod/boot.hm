@@ -1,0 +1,4 @@
+# Load next module
+module "boot.mod/kernel.mod/vmlinuz"
+sysc -1
+;;

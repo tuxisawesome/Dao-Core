@@ -1,0 +1,13 @@
+# startup
+setv stdout "boot>>> "
+sysc scanf
+setv stdout "boot"
+setv 2 "boot.mod/boot"
+sysc if
+setv stdout "help"
+setv 2 "boot.mod/help"
+sysc if
+setv stdout "exit"
+setv 2 "boot.mod/exit"
+sysc if
+module "boot.mod/startup"

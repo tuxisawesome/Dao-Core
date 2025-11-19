@@ -1,0 +1,5 @@
+# Help function
+setv stdout "Dao Help\n"
+sysc printf
+setv stdout "Commands available: 'boot','help','exit'\n"
+sysc printf

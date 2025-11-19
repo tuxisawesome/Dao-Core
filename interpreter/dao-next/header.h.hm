@@ -1,0 +1,33 @@
+# Headerfile
+# Systemcall 1 is printf
+trans 1 "printf"
+# Systemcall 2 is scanf (input)
+trans 2 "scanf"
+
+trans 3 "add"
+trans 4 "sub"
+trans 5 "mul"
+trans 6 "div"
+trans 0 "if"
+
+
+#       0 is stdout
+#       1 is stdin
+# 2 ==> 9 is for syscalls
+#      10 is for version
+#     11+ is for temp
+
+
+
+map 0 stdout
+map 1 stdin
+# 2 is special as it is used for some system calls as a comparison variable
+# That is why it is named mx
+map 2 mx
+# ver variable is version
+
+map 10 ver
+
+setv ver "0.0.1"
+
+;;
