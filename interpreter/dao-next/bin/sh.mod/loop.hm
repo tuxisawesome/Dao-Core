@@ -1,11 +1,7 @@
 # loop
-setv stdout "# "
+setv 2 "# "
 sysc scanf
-setv stdout "exit"
-setv 2 "boot.mod/exit"
-sysc if
-
-
-
-
+setv 9 1
+exec
+scope
 module "bin/sh.mod/loop"

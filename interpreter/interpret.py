@@ -30,24 +30,24 @@ def prints(scope):
     return scope, 0
 
 def inputs(scope):
-    # Gets the input from scope[0] and outputs to scope[1] (returns to)
-    scope[1][1] = input(scope[1][0])
+    # Gets the input from scope[2] and outputs to scope[1] (returns to)
+    scope[1][1] = input(scope[1][2])
     return scope,0
 
 def add(scope):
-    scope[1][0] = str(float(scope[1][1]) + float(scope[1][2]))
+    scope[1][0] = str(float(scope[1][3]) + float(scope[1][4]))
     return scope, 0
 
 def sub(scope):
-    scope[1][0] = str(float(scope[1][2]) - float(scope[1][1]))
+    scope[1][0] = str(float(scope[1][4]) - float(scope[1][3]))
     return scope, 0    
 
 def mul(scope):
-    scope[1][0] = str(float(scope[1][1]) * float(scope[1][2]))
+    scope[1][0] = str(float(scope[1][3]) * float(scope[1][4]))
     return scope, 0
 
 def div(scope):
-    scope[1][0] = str(float(scope[1][2]) / float(scope[1][1]))
+    scope[1][0] = str(float(scope[1][4]) / float(scope[1][3]))
     return scope, 0
 
 def f(scope):
@@ -62,11 +62,11 @@ def end(scope):
 #-1: End                - Kills the program
 # 0: If                 - Checks if data in scope[1][0] is equal to scope[1][1] and if so, jump to another program in scope[1][2]
 # 1: Print              - Prints stuff in scope[1][0]
-# 2: Input              - Inputs stuff in scope[1][1] with prompt scope[1][0]
-# 3: Add                - Adds values in scope[1][1] and scope[1][2] and outputs to scope[1][0]
-# 4: Subtract           - Subtracts scope[1][2] to scope[1][1] (scope2 - scope1) and outputs to scope[1][0]
-# 5: Multiply           - Multiplys scope[1][1]and scope[1][2] and outputs to scope[1][0]
-# 6: Divide             - Divides scope[1][2] by scope[1][1] (scope2 / scope1) and outputs to scope[1][0]
+# 2: Input              - Inputs stuff in scope[1][1] with prompt scope[1][2]
+# 3: Add                - Adds values in scope[1][3] and scope[1][4] and outputs to scope[1][0]
+# 4: Subtract           - Subtracts scope[1][4] to scope[1][3] (scope4 - scope3) and outputs to scope[1][0]
+# 5: Multiply           - Multiplys scope[1][4]and scope[1][3] and outputs to scope[1][0]
+# 6: Divide             - Divides scope[1][4] by scope[1][3] (scope4 / scope3) and outputs to scope[1][0]
 
 
 calls = [[-1,0,1,2,3,4,5,6],[end,f,prints,inputs,add,sub,mul,div]]
@@ -138,6 +138,9 @@ def interpret(command,scope=[[[],[]],[],[]]):
         name = command.split('"')[1].strip('"')
         scope = exec_module(name, scope)
         return scope, 0
+    if command == "exec":
+        scope,ret = interpret(scope[1][9],scope) # Executes the code in the 9th slot
+        return scope, ret
     return scope, 255
     
     
