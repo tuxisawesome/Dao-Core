@@ -1,0 +1,4 @@
+# Help file
+module "usr/man/help/sh"
+module "bin/sh.mod/loop"
+;;

@@ -9,13 +9,15 @@ trans 4 "sub"
 trans 5 "mul"
 trans 6 "div"
 trans 0 "if"
-
+trans 8 "sys_change_randaddr"
 
 #       0 is stdout
 #       1 is stdin
-# 2 ==> 9 is for syscalls
+# 2 ==> 8 is for syscalls
+#       9 is for available memory
 #      10 is for version
 #     11+ is for temp
+
 
 
 
@@ -28,6 +30,6 @@ map 2 mx
 
 map 10 ver
 
-setv ver "0.0.1"
+
 
 ;;

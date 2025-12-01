@@ -3,3 +3,4 @@
 setv stdout "Sh\n"
 sysc printf
 module "bin/sh.mod/loop"
+;;

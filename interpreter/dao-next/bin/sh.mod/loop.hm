@@ -1,7 +1,23 @@
 # loop
 setv 2 "# "
 sysc scanf
+# Reset variable 1
 setv 9 1
+
+
+# Check scanf results against word "help"
+setv stdout "help"
+setv 2 "bin/sh.mod/help"
+sysc if
+setv stdout "mem"
+setv 2 "bin/sh.mod/mem"
+sysc if
+
 exec
-scope
+
+# Debug mode: Show scope
+# scope
+
+# loop
 module "bin/sh.mod/loop"
+;;

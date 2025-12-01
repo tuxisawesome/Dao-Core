@@ -1,3 +1,4 @@
 # DAO-next kernel
 module "boot.mod/kernel.mod/branding"
 module "sbin/init.mod/init
+;;

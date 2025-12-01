@@ -1,5 +1,6 @@
 # Dao program
 module "header.h"
+module "initializer.h"
 setv stdout "Dao-Next Core 0.1\n"
 sysc printf
 module "boot.mod/startup"

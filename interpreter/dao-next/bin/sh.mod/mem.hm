@@ -1,0 +1,12 @@
+# memory
+# Prints total system memory
+setv 14 0
+setv 0 "Total system memory: "
+sysc printf
+setv 0 11
+sysc printf
+setv 0 " blocks\n"
+sysc printf
+setv 0 14
+module "bin/sh.mod/loop"
+;;

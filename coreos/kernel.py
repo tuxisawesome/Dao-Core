@@ -1,7 +1,7 @@
 #4.2
 bd="4.2" # Build number
 
-
+GLOBAL_SIP = True
 
 import sys
 
@@ -118,7 +118,7 @@ class kernel:
     configpath="etc/"
     driverpath = "lib/"    
 
-    sip=True # Enables system integrity protection
+    sip=GLOBAL_SIP # Enables system integrity protection
 
     class configuration:
         defconfig = ["version=1.0","verbosedrivers=1"]# Fallback for config.cfg file

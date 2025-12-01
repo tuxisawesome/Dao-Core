@@ -5,3 +5,4 @@ setv stdout 10
 sysc printf
 setv stdout " is starting up!\n"
 sysc printf
+;;

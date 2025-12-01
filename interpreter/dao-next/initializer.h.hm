@@ -1,0 +1,16 @@
+# initializer
+# Not required for the language to function, but required
+# to have a good operating system experience
+
+setv ver "0.0.1"
+sysc 7
+setv 11 2
+map 11 system_memory_avail
+
+# Sets variable slot 11 as system_memory_avail
+
+# Be careful, the variable rnd is set to a random memory address after every syscall 8
+It is defaulting to 15 but we will change it for best programming practices.
+sysc sys_change_randaddr
+
+;;

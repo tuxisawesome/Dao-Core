@@ -1,0 +1,12 @@
+# Help file for Sh
+setv 0 "Help\n"
+sysc printf
+setv 0 "This shell executes harmonious commands in real time!\n"
+sysc printf
+setv 0 "Shell built in commands: \n"
+sysc printf
+setv 0 "help        - Shows this page\n"
+sysc printf
+setv 0 "mem         - Shows total enabled system mem\n"
+sysc printf
+;;

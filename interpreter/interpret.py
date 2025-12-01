@@ -5,6 +5,16 @@
 # [[[ (System call names) ],[ (System calls) ]],[ (Program variable scope (scope:0 is stdin),(scope:1 is stdout)) ],[[Variable name map],[Corresponding vars]]]
 
 
+#MALLOC_CONSTANT = 24 * 1024 * 1024 # Constant in mb
+MALLOC_CONSTANT = 25
+
+RANDOM_MEMADDR = 15
+
+def change_randmem():
+    import random as rn
+    RANDOM_MEMADDR = rn.randint(15, MALLOC_CONSTANT - 10)
+
+
 
 def exec_module(name,scope):
     new_scope = scope
@@ -55,21 +65,30 @@ def f(scope):
         scope = exec_module(scope[1][2],scope)
     return scope,0
 
+def sys_mem_avail(scope):
+    scope[1][2] = str(MALLOC_CONSTANT)
+    return scope,0
+
 def end(scope):
     import sys
     sys.exit(0)
 
-#-1: End                - Kills the program
-# 0: If                 - Checks if data in scope[1][0] is equal to scope[1][1] and if so, jump to another program in scope[1][2]
-# 1: Print              - Prints stuff in scope[1][0]
-# 2: Input              - Inputs stuff in scope[1][1] with prompt scope[1][2]
-# 3: Add                - Adds values in scope[1][3] and scope[1][4] and outputs to scope[1][0]
-# 4: Subtract           - Subtracts scope[1][4] to scope[1][3] (scope4 - scope3) and outputs to scope[1][0]
-# 5: Multiply           - Multiplys scope[1][4]and scope[1][3] and outputs to scope[1][0]
-# 6: Divide             - Divides scope[1][4] by scope[1][3] (scope4 / scope3) and outputs to scope[1][0]
+def sys_change_addr(scope):
+    change_randmem()
+    return scope, 0
 
+#-1: End                        - Kills the program
+# 0: If                         - Checks if data in scope[1][0] is equal to scope[1][1] and if so, jump to another program in scope[1][2]
+# 1: Print                      - Prints stuff in scope[1][0]
+# 2: Input                      - Inputs stuff in scope[1][1] with prompt scope[1][2]
+# 3: Add                        - Adds values in scope[1][3] and scope[1][4] and outputs to scope[1][0]
+# 4: Subtract                   - Subtracts scope[1][4] to scope[1][3] (scope4 - scope3) and outputs to scope[1][0]
+# 5: Multiply                   - Multiplys scope[1][4]and scope[1][3] and outputs to scope[1][0]
+# 6: Divide                     - Divides scope[1][4] by scope[1][3] (scope4 / scope3) and outputs to scope[1][0]
+# 7: System Memory Available    - Returns the system memory availble in the mx variable
+# 8: Change system random addr  - Changes the random access address. Does not change scope at all.
 
-calls = [[-1,0,1,2,3,4,5,6],[end,f,prints,inputs,add,sub,mul,div]]
+calls = [[-1,0,1,2,3,4,5,6,7,8],[end,f,prints,inputs,add,sub,mul,div,sys_mem_avail,sys_change_addr]]
 
 
 system_calls = calls
@@ -109,8 +128,13 @@ def interpret(command,scope=[[[],[]],[],[]]):
             for varmap in scope[2][0]:
                 if varmap == command.split(" ")[1]:
                     index = int(scope[2][1][scope[2][0].index(varmap)])
+            if command.split(" ")[1] == "rnd": # Random address
+                index = int(RANDOM_MEMADDR)
         try:
-            value = command.split('"')[1].strip('"')
+            if command.split(" ")[2] == "rnd":
+                value = scope[1][RANDOM_MEMADDR]
+            else:
+                value = command.split('"')[1].strip('"')
         except:
             value = scope[1][int(command.split(" ")[2])]
         scope[1][index] = value
@@ -149,7 +173,7 @@ def repl():
     counter = 0
     scope = [[[],[]],[[],[]],[[],[]]]
 
-    while counter < 100:
+    while counter < MALLOC_CONSTANT:
         scope[1].append(" ")
         counter += 1
     while True:

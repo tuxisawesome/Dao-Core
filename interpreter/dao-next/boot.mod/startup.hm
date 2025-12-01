@@ -11,3 +11,4 @@ setv stdout "exit"
 setv 2 "boot.mod/exit"
 sysc if
 module "boot.mod/startup"
+;;
