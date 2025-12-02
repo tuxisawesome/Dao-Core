@@ -1,11 +1,15 @@
 # loop
+
+# Set random variable to stdout before test to save variable contents
+setv rnd 0
+
 setv 2 "# "
 sysc scanf
-# Reset variable 1
+# Reset variable 1 (stdin)
 setv 9 1
 
 
-# Check scanf results against word "help"
+# Check scanf results against word "help" and word "mem"
 setv stdout "help"
 setv 2 "bin/sh.mod/help"
 sysc if
@@ -13,9 +17,19 @@ setv stdout "mem"
 setv 2 "bin/sh.mod/mem"
 sysc if
 
+
+# Reset the standard output to random variable's contents
+setv stdout rnd
+
+# Execute the program
 exec
 
-# Debug mode: Show scope
+# Free random variable memory
+setv rnd ""
+# Change the address for the random variable
+sysc sys_change_randaddr
+
+# Debug mode: Show scope after program execution
 # scope
 
 # loop

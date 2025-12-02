@@ -1,12 +1,15 @@
 # memory
 # Prints total system memory
-setv 14 0
+setv rnd 0
 setv 0 "Total system memory: "
 sysc printf
 setv 0 11
 sysc printf
 setv 0 " blocks\n"
 sysc printf
-setv 0 14
+setv 0 rnd
+setv rnd ""
+sysc sys_change_randaddr
+
 module "bin/sh.mod/loop"
 ;;
