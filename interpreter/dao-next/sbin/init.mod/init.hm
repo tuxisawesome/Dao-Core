@@ -1,4 +1,4 @@
 # Initialize
-module "bin/sh.mod/sh"
+module "bin/sh"
 
 ;;

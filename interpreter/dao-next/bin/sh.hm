@@ -1,0 +1,4 @@
+# Shortcut to sh.mod
+
+module "bin/sh.mod/main"
+;;
