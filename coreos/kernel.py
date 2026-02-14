@@ -1,7 +1,7 @@
 #4.2
 bd="4.2" # Build number
 
-GLOBAL_SIP = True
+GLOBAL_SIP = False
 
 import sys
 
