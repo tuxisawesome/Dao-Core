@@ -1,4 +1,4 @@
-#1.0
+#1.1
 
 
 def init(drivers,drivernames,configmgr,drivermgr,kernel):
