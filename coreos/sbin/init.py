@@ -1,4 +1,4 @@
-#2.2
+#2.4
 import sys
 
 def init(display, verbosedrivers,configmgr,drivermgr,drivers,drivernames,kernel):

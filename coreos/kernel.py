@@ -1,5 +1,5 @@
-#4.2
-bd="4.2" # Build number
+#4.4
+bd="4.4" # Build number
 
 GLOBAL_SIP = False
 

@@ -1,5 +1,5 @@
-#1.4
-v = 1.4
+#1.5
+v = 1.5
 repo_root = "https://raw.githubusercontent.com/tuxisawesome/DaoDownloader/refs/heads/main/"
 
 def init(drivers,drivernames,configmgr,drivermgr,kernel):
@@ -44,7 +44,7 @@ def init(drivers,drivernames,configmgr,drivermgr,kernel):
         display.printline("Server down.")
         return
     
-    apps,appnames,vers,path = packagekit.read_repofile(str(response_data))
+    apps,appnames,vers,path,originalfilenames = packagekit.read_repofile(str(response_data))
 
     display.printline("=== APPS ===")
     for appx in appnames:
