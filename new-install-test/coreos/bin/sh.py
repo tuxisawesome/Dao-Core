@@ -31,7 +31,7 @@ def firstrun(drivers, drivernames, configmgr, drivermgr,kernel):
     system = drivers[drivernames.index("sys")]
     display.printline("Welcome to the Dao Installation Program!")
     display.printline("We will now update your system to make sure it is running the latest software.")
-    display.printline("Would you like to: [i]nstall the latest updates, [a]ccess advanced options, or [e]xit the installer?")
+    display.printline("Would you like to: [i]nstall the latest updates, [a]ccess network options, or [e]xit the installer?")
     x = imp.getinput("[i/a/e]: ")
     if x == "i":
         display.printline("Installing updates...")
@@ -43,9 +43,10 @@ def firstrun(drivers, drivernames, configmgr, drivermgr,kernel):
         display.printline("Rebooting system to apply updates...")
         return
     elif x == "a":
-        display.printline("Accessing advanced options...")
+        display.printline("Accessing network options...")
         # Here you would add code to show advanced options, such as partitioning the disk, configuring the network, etc.
-        display.printline("Advanced options accessed successfully!")
+        netconnect(drivers,drivernames,configmgr,drivermgr,kernel)
+        display.printline("Network configured successfully!")
         firstrun(drivers,drivernames,configmgr,drivermgr,kernel)
     elif x == "e":
         display.printline("Exiting installer. Goodbye!")
@@ -79,3 +80,18 @@ def system_update(drivers,drivernames,configmgr,drivermgr,kernel):
             display.printline("Please now run 'bootsign' in case any core system files changed.")
 
 
+def netconnect(drivers,drivernames,configmgr,drivermgr,kernel):
+    display = drivers[drivernames.index("display")]
+    display.printline("Net-Connect")
+    display.printline("Checking for a valid network driver...")
+    try:
+        network = drivers[drivernames.index("net-connect")]
+    except:    
+        display.printline("!   No network driver found. Please install a network driver to use this application.")
+        return
+    interactive = drivers[drivernames.index("input")]
+    display.printline("Please enter the SSID of the network you wish to connect to:")
+    ssid = interactive.getinput("SSID: ")
+    password = interactive.getinput("Password (leave blank for open networks): ")
+    display.printline("Attempting to connect to " + ssid + "...")
+    network.connect(display,kernel,ssid, password)
