@@ -1,0 +1,4 @@
+# Shortcut to helloworld.mod
+
+module "bin/helloworld.mod/main"
+;;

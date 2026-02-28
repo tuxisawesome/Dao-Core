@@ -6,7 +6,7 @@
 
 
 #MALLOC_CONSTANT = 24 * 1024 * 1024 # Constant in mb
-MALLOC_CONSTANT = 25
+MALLOC_CONSTANT = 50 # 50 byte allocation
 
 RANDOM_MEMADDR = 15
 

@@ -1,0 +1,5 @@
+# Helloworld.mod
+setv 0 "Hello world!\n"
+sysc printf
+
+;;
