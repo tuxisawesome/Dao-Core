@@ -1,0 +1,2 @@
+cd testing/
+python3 main.py
