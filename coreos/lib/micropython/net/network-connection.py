@@ -56,12 +56,12 @@ def connect(display,kernel,ssid="",password=""):
     if not validcheck(kernel): return
     Internet.wlan.connect(ssid, password)
     display.printline("Connecting to " + ssid + "...")
+    import time
     for i in range(20):
         if Internet.wlan.isconnected():
             display.printline("Connected to " + ssid + "!")
             Internet.online = True
             return
-        import time
         time.sleep(1)
     display.printline("Failed to connect to " + ssid + ". Please check your credentials")
 
