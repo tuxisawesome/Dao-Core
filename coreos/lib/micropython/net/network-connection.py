@@ -61,6 +61,7 @@ def connect(display,kernel,ssid="",password=""):
             display.printline("Connected to " + ssid + "!")
             Internet.online = True
             return
+        import time
         time.sleep(1)
     display.printline("Failed to connect to " + ssid + ". Please check your credentials")
 
