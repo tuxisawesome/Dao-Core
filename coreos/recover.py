@@ -12,3 +12,5 @@ def boot(args):
 def init(drivers,drivernames,configmgr,drivermgr,kernel):
     display = drivers[drivernames.index("display")]
     display.printline("The recovery shell is not an application.")
+    display.printline("It is a special mode that can be used to flash new software or firmware.")
+    display.printline("To access recovery mode, type 'recover' in the bootloader.")

@@ -1,3 +1,8 @@
+class Internet:
+    network_active = False
+    online = False
+    wlan = None
+
 
 def init(drivers,drivernames,configmgr,drivermgr,kernel):
     if not validcheck(kernel): return
@@ -6,7 +11,12 @@ def init(drivers,drivernames,configmgr,drivermgr,kernel):
     except:
         print("!! Please place net-connect after display.")
         return
-    connect(display=display,kernel=kernel)
+    import network
+    import time
+    Internet.wlan = network.WLAN(network.STA_IF)
+    Internet.wlan.active(True)
+    Internet.network_active = True
+    display.printline("** Net-connect is loaded.")
 
 
 def validcheck(kernel):
@@ -16,9 +26,11 @@ def validcheck(kernel):
             return False
     try:
         import requests
-        return True
     except:
         return False
+    if Internet.wlan is None:
+        return False
+    return True
 
 def get_web_data(website,kernel):
     if not validcheck(kernel):
@@ -32,8 +44,50 @@ def get_web_data(website,kernel):
     response_code=response.status_code
     response_content=response.content
     return response_code,response_content
-    
-def connect(display,kernel,ssid="",password=""):
-    if not validcheck: return
-    display.printline("**  Net-connect will assume that the internet is already connected to the machine.") 
 
+
+def scan_networks(kernel):                            # Returns a list of nearby wifi stations.
+    if not validcheck(kernel): return []
+    ssidlist = Internet.wlan.scan()
+    return ssidlist
+    
+    
+
+def connect(display,kernel,ssid="",password=""):
+    if not validcheck(kernel): return
+    Internet.wlan.connect(ssid, password)
+    display.printline("Connecting to " + ssid + "...")
+    for i in range(20):
+        if Internet.wlan.isconnected():
+            display.printline("Connected to " + ssid + "!")
+            Internet.online = True
+            return
+        time.sleep(1)
+    display.printline("Failed to connect to " + ssid + ". Please check your credentials")
+
+def status(kernel):
+    if not validcheck(kernel): return None
+    if Internet.wlan.status() == 3:
+        Internet.online = True
+    else:        Internet.online = False
+
+    return Internet.wlan.status()
+    # 0 : Not enabled
+    # 1 : Scanning for network
+    # 2 : Connecting to network
+    # 3 : Connected to network
+    # 4 : Connection failed
+
+def network_info(kernel):                         # returns ifconfig but if not connected returns none
+    if not validcheck(kernel): return None
+    if Internet.wlan.isconnected():
+        return Internet.wlan.ifconfig()
+    else:
+        return None
+
+def disconnect(kernel):
+    if not validcheck(kernel): return
+    Internet.wlan.disconnect()
+    Internet.wlan.active(False)
+    Internet.online = False
+    Internet.wlan.deinit() # Powers down the driver
