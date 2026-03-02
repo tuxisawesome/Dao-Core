@@ -11,6 +11,7 @@ def init(drivers,drivernames,configmgr,drivermgr,kernel):
     except:
         print("!! Please place net-connect after display.")
         return
+    display.printline("** Loading net-connect...")
     import network
     import time
     Internet.wlan = network.WLAN(network.STA_IF)
@@ -27,8 +28,6 @@ def validcheck(kernel):
     try:
         import requests
     except:
-        return False
-    if Internet.wlan is None:
         return False
     return True
 
