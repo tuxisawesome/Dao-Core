@@ -11,8 +11,8 @@ def init(drivers, drivernames, configmgr, drivermgr,kernel):
     else:
         print("Could not determine terminal width.")
 
-def printline(text):
-    print(text)
+def printline(text,ret="\n"):
+    print(text,end=ret)
 
 def getdimmentions():
     import os
