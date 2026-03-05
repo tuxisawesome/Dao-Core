@@ -25,7 +25,7 @@ def validcheck(kernel):
         return False
 
 def scan_networks(kernel):
-    return ["Internet already connected"]
+    return [(b"Internet already connected",0,0,0,0)]
 
 def status(kernel):
     if validcheck(kernel): return 3 
