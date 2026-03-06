@@ -44,9 +44,34 @@ def firstrun(drivers, drivernames, configmgr, drivermgr,kernel):
         return
     elif x == "a":
         display.printline("Accessing network options...")
-        # Here you would add code to show advanced options, such as partitioning the disk, configuring the network, etc.
-        netconnect(drivers,drivernames,configmgr,drivermgr,kernel)
-        display.printline("Network configured successfully!")
+        display.printline("[s]: Scan for networks")
+        display.printline("[c]: Connect to a network")
+        display.printline("[g]: Get network status")
+        x = imp.getinput("[scg]: ")
+        if x == "s":
+            display.printline("Scanning for nearby networks...")
+            ssidlist = network.scan_networks(kernel)
+            if len(ssidlist) == 0:
+                display.printline("No networks found.")
+                return
+            display.printline("Nearby Networks:")
+            display.printline("================")
+            for ssid in ssidlist:
+                display.printline(ssid[0].decode("utf-8") + "  Strength: " + str(ssid[2]))
+        elif x == "g":
+            display.printline("Getting network information...")
+            info = network.network_info(kernel)
+            if info is None:
+                display.printline("Not connected to a network.")
+                return
+            display.printline("IP Address: " + info[0])
+            display.printline("Subnet Mask: " + info[1])
+            display.printline("Gateway: " + info[2])
+            display.printline("DNS: " + info[3])
+        elif x == "c":
+            # Here you would add code to show advanced options, such as partitioning the disk, configuring the network, etc.
+            netconnect(drivers,drivernames,configmgr,drivermgr,kernel)
+            display.printline("Network configured successfully!")
         firstrun(drivers,drivernames,configmgr,drivermgr,kernel)
     elif x == "e":
         display.printline("Exiting installer. Goodbye!")
