@@ -1,4 +1,7 @@
-
+class Internet:
+    network_active = True
+    online = True
+    wlan = None # No need, assumes internet is already connected.
 def init(drivers,drivernames,configmgr,drivermgr,kernel):
     if not validcheck(kernel): return
     try:
@@ -6,8 +9,9 @@ def init(drivers,drivernames,configmgr,drivermgr,kernel):
     except:
         print("!! Please place net-connect after display.")
         return
-    connect(display=display,kernel=kernel)
-
+    display.printline("** Net-connect will assume that the machine is already connected to the internet.")
+    display.printline("** Values that are displayed will be dummy values.")
+    
 
 def validcheck(kernel):
     kargs = kernel.args
@@ -19,6 +23,19 @@ def validcheck(kernel):
         return True
     except:
         return False
+
+def scan_networks(kernel):
+    return [(b"Internet already connected",0,0,0,0)]
+
+def status(kernel):
+    if validcheck(kernel): return 3 
+    else: return 0
+
+def network_info(kernel):
+    return ['0.0.0.0','255,255,255,0','0.0.0.0','8.8.8.8']
+
+def disconnect(kernel):
+    pass
 
 def get_web_data(website,kernel):
     if not validcheck(kernel):

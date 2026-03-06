@@ -64,11 +64,15 @@ def uname():
 ```
 
 ### Networking Drivers
-#### Net (net-connect)
+#### Net (net-connect) (network-connection.py)
 Dependencies: display
 
 Format:
 ```
+class Internet:                 
+    network_active = False       (True when network is active)
+    online = False              (True when online)
+    wlan = None                 (Link to a "wlan0" object)
 def init():
     (Initialization code.)
     (May include connection to internet here.)
@@ -76,6 +80,29 @@ def init():
 def validcheck(kernel):
     (Checks if device can connect to internet / Has devices to connect to internet / Is allowed to connect to internet)
     (Returns True if able to connect and False if unable.)
+
+def get_web_data(website, kernel):
+    （Gets web data. Returns (response_code, response_content)
+
+def scan_networks(kernel):
+    (Scans for networks and returns a list of ssids.)
+
+def status(kernel):
+    (Returns the status of a network connection.)
+    0 - Not enabled
+    1 - Scanning for network
+    2 - Connecting to network
+    3 - Connected to network
+        -- Set internet.online to true
+    4 - Connection failed
+
+def network_info(kernel):
+    (Returns network info)
+    (Returns in the form of ['ip', 'subnet mask', 'gateway', 'DNS'])
+
+def disconnect(kernel):
+    (Disconnects and unpowers the wifi chip.)
+    (Sets internet.online to false.)
 
 def connect(display,kernel,ssid,password):
     (Connects to the internet. Called from "init" function or other application.)
