@@ -1,4 +1,6 @@
-rm -r testing
-cp -r coreos/ testing
+rm -rv testing
+rm -rv coreos/lib/
+cp -rv ../coreos/lib/ coreos/lib/
+cp -rv coreos/ testing
 cd testing
 python3 main.py
